@@ -1,5 +1,4 @@
 from module_db_test import *
-from translate_word import get_translate_word
 
 
 def test_word(id, num=5):
