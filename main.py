@@ -26,5 +26,5 @@ def handle_message():
 
 
 
-if __name__ == 'main':
-    app.run(port=5002)
+print("hi")
+app.run(port=5002)

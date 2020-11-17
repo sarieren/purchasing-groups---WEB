@@ -12,9 +12,10 @@ def insert_words_test(id, list_words):
                 val = (id, word, index)
                 cursor.execute(query, val)
                 connection.commit()
-                index+=1
+                index += 1
     except:
-        raise Exception("db_test Error")
+        raise Exception("db_test Error insert_words_test")
+
 
 def get_words_from_test(id):
     try:
@@ -25,7 +26,8 @@ def get_words_from_test(id):
             result = cursor.fetchall()
             return result
     except:
-        raise Exception("db_test Error")
+        raise Exception("db_test Error get_words_from_test")
+
 
 def delete_words_from_test(id):
     try:
@@ -35,7 +37,7 @@ def delete_words_from_test(id):
             cursor.execute(query, val)
             connection.commit()
     except:
-        raise Exception("db_test Error")
+        raise Exception("db_test Error delete_words_from_test")
 
 
 def find_words_for_test(id, amout_of_words_translate):
@@ -56,13 +58,3 @@ def find_words_for_test(id, amout_of_words_translate):
         return new_word_list
     except Exception as e:
         return e
-
-
-
-#Insert_words_test(1, ["why", "how","chair", "table"])
-# Insert_words_test(2, ["a", "b","c", "d"])
-
-# print(get_words_from_test(2))
-# delete_words_from_test(2)
-
-# print(find_words_for_test(33, 6))
