@@ -46,13 +46,14 @@ def check_results(id, string_from_user):
                 update_quantity(id, ls_words_from_test[i])
         if not wrong:
             delete_words_from_test(id)
-            return "You Are Very Smart! Everything is correct\n for more quiz click on /test"
+            return "You Are Very Smart! Everything is correct\n for more quiz click on /test \n for return click /go_back\n"
         else:
             list_of_wrong_word = "Mistakes:\n"
             for i in wrong:
                 list_of_wrong_word += i + ": " + get_translate_word(i) + "\n"
             delete_words_from_test(id)
-            list_of_wrong_word = list_of_wrong_word + "for another quiz click on /test"
+            list_of_wrong_word = list_of_wrong_word + "for another quiz click on /test \n for return click /go_back\n"
             return list_of_wrong_word
     except Exception as e:
+        delete_words_from_test(id)
         return Exception("error test_word")
