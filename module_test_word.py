@@ -2,15 +2,19 @@ from module_db_test import *
 from translate_word import get_translate_word
 
 
-def test_word(id, num=5):
-    ls_of_test_word = find_words_for_test(id, num)
-    insert_words_test(id, ls_of_test_word)
-    string_to_return = ""
-    for word in ls_of_test_word:
-        string_to_return += word
-        string_to_return += '\n'
-    string_to_return += "answer by order with space between words"
-    return string_to_return
+def test_word(id, num = 5):
+    try:
+        ls_of_test_word = find_words_for_test(id, num)
+        insert_words_test(id, ls_of_test_word)
+        string_to_return = ""
+        for word in ls_of_test_word:
+            string_to_return += word
+            string_to_return += '\n'
+        string_to_return += "answer by order with comma between words"
+        return string_to_return
+    except Exception as e:
+        return e
+
 
 
 def menu_test_word(id, input):
@@ -20,13 +24,14 @@ def menu_test_word(id, input):
         else:
             return check_results(id, input)
     except Exception as e:
-        return e
+        raise Exception(e)
 
 
 def check_results(id, string_from_user):
     try:
         ls_words_from_test = get_words_from_test(id)
-        ls_from_user = string_from_user.split(" ")
+        ls_from_user = string_from_user.split(",")
+        ls_from_user = [word.strip() for word in ls_from_user]
         ls_words_from_test = [word["word"] for word in ls_words_from_test]
 
         if len(ls_from_user) < len(ls_words_from_test):
