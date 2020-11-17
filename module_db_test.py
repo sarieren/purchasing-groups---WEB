@@ -2,6 +2,7 @@ from config_db import *
 from module_db_words import *
 from module_db_default_words import *
 
+
 def insert_words_test(id, list_words):
     index = 0
     try:

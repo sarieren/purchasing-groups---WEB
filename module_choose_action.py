@@ -11,6 +11,7 @@ def get_main_menu():
         return "error in main_menu"
 
 
+
 def choose_action(id, input):
     try:
         if (input == "/start" or input == "/call_back"):

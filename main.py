@@ -1,7 +1,5 @@
 from flask import Flask, Response, request
 from module_choose_action import choose_action
-
-
 import requests
 
 
