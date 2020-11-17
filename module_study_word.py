@@ -3,13 +3,11 @@ from module_db_default_words import find_words_unused
 from module_db_words import insert_word
 from flask import Flask, request, Response
 import requests
+from translate_word import *
 
-
-def get_Translate_word(word):
-    return "שלום"
 def study_word(id):
     word=find_words_unused(1)[0]['word']
-    translated_word = get_Translate_word(word)
+    translated_word = get_translate_word(word)
     insert_word(id,word)
     s1= word+" : "+ translated_word+"\n" +"\n/next\n\n " + "/go_back"
     return s1
