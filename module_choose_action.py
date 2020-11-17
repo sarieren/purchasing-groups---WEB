@@ -2,7 +2,6 @@ from module_db_state import get_state, insert_or_update_state
 from translate_word import menu_translate_word
 from module_study_word import menu_study_word
 
-
 def get_main_menu():
     try:
         main_menu = "Please click on the action you want to perform:" \
