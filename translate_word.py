@@ -42,3 +42,4 @@ def translate_word_and_update_db(id, word_to_translate):
     except Exception as e:
         return e
 
+
