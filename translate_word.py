@@ -8,7 +8,7 @@ def menu_translate_word (id, input):
         if(input == "/translate_word" or input == "/next"):
             return "Please enter one word for translation"
         elif(input == "/go_back"):
-            return  insert_or_update_state(id,"main_menu")
+            return insert_or_update_state(id,"main_menu")
         else:
             return translate_word_and_update_db(id, input)
     except:
