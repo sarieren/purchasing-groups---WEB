@@ -30,8 +30,11 @@ def menu_test_word(id, input):
 def check_results(id, string_from_user):
     try:
         ls_words_from_test = get_words_from_test(id)
-        ls_from_user = string_from_user.split(",")
-        ls_from_user = [word.strip() for word in ls_from_user]
+        if("," in string_from_user):
+            ls_from_user = string_from_user.split(",")
+            ls_from_user = [word.strip() for word in ls_from_user]
+        else:
+            ls_from_user = string_from_user
         ls_words_from_test = [word["word"] for word in ls_words_from_test]
 
         if len(ls_from_user) < len(ls_words_from_test):
