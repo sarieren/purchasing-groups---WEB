@@ -31,6 +31,7 @@ from telegram.ext import (
 # Enable logging
 from module_study_word import menu_study_word
 from module_test_word import menu_test_word
+from picture_test import get_url, check_result_picture
 from translate_word import menu_translate_word
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -84,6 +85,12 @@ def gender(update: Update, context: CallbackContext) -> int:
            s=menu_test_word(update.effective_chat.id,"/test")
            update.message.reply_text(s)
            return LOCATION
+    if (update.message.text == "photo_test"):
+           s=get_url(update.effective_chat.id)
+           update.message.reply_text(s)
+           return TESTS
+
+
     else:
         print("here")
         print(update.message.text)
@@ -153,11 +160,19 @@ def bio(update: Update, context: CallbackContext) -> int:
         )
     return BIO
 def tests(update: Update, context: CallbackContext) -> int:
-    reply_keyboard = [['words_test'],['photo_test']]
+    if (update.message.text == "go_back"):
+        start_menu(update, CallbackContext)
+        return GENDER
+    print("in location")
+    s = check_result_picture(update.effective_chat.id, update.message.text)
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=str(s))
+    reply_keyboard = [['more_test', 'go_back']]
     update.message.reply_text(
-            'hey',
-            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
-        )
+        'hey',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+    )
+    return GENDER
 def cancel(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     logger.info("User %s canceled the conversation.", user.first_name)
@@ -187,7 +202,7 @@ def main() -> None:
             PHOTO: [MessageHandler(Filters.regex('^(next|go_back|more_test)$'), gender)],
             LOCATION: [MessageHandler(Filters.text & ~Filters.command, location)],
             BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
-            TESTS: [MessageHandler(Filters.regex('^(words_test|photo_test)$'), tests)]
+            TESTS: [MessageHandler(Filters.text & ~Filters.command, tests)]
         },
         fallbacks=[CommandHandler('cancel', cancel)],
     )
