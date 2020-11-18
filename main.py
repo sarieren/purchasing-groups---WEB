@@ -4,7 +4,7 @@ import requests
 
 
 TOKEN = '1267251022:AAGxFzIuefMui68W-YF-gHBg2nv08CJ1Vd8'
-TELEGRAM_INIT_WEBHOOK_URL = 'https://api.telegram.org/bot{}/setWebhook?url=https://b62a25b0d2d7.ngrok.io/message'.format(TOKEN)
+TELEGRAM_INIT_WEBHOOK_URL = 'https://api.telegram.org/bot{}/setWebhook?url=https://34585cf2a9bb.ngrok.io/message'.format(TOKEN)
 
 requests.get(TELEGRAM_INIT_WEBHOOK_URL)
 
@@ -26,5 +26,5 @@ def handle_message():
 
 
 
-print("hi")
+
 app.run(port=5002)

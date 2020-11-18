@@ -48,5 +48,6 @@ def restart_table():
         with connection.cursor() as cursor:
             query = "UPDATE db_defult_words set in_use = 0;"
             cursor.execute(query)
+            connection.commit()
     except:
         raise Exception("DBError -  db default words")
