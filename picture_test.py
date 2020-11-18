@@ -55,10 +55,10 @@ def get_url_and_enter_to_db(id, all_links, common_word):
 def check_result_picture(id, picture_translate):
     try:
         ls_words_from_test = get_words_from_test(id)
-        ls_words_from_test = [word["word"] for word in ls_words_from_test]
+        ls_words_from_test = [word["word"].lower() for word in ls_words_from_test]
 
 
-        if(picture_translate in ls_words_from_test):
+        if(picture_translate.lower() in ls_words_from_test):
             answer = "You're right!! 💪🏻\n\n"
         else:
             answer = '<b>'+ 'The answers are: ' + '</b>'+'\n'

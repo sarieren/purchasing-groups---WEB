@@ -44,10 +44,17 @@ def get_words_sorted_descending_order(id):
             return result
     except:
         raise Exception("db_words Error")
-    '''
-        except Exception as e:
-        return e
-    '''
+
+def get_words_quantity_sorted_descending_order(id):
+    try:
+        with connection.cursor() as cursor:
+            query = "SELECT word, quantity FROM db_word WHERE id=%s ORDER BY quantity desc"
+            val = (id)
+            cursor.execute(query, val)
+            result = cursor.fetchall()
+            return result
+    except:
+        raise Exception("db_words Error")
 
 
 def word_update_or_insert(id, word):
