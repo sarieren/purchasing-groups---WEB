@@ -16,6 +16,7 @@ from module_test_word import menu_test_word
 from picture_test import get_url, check_result_picture
 from test_after_translate import test_after_translate
 from translate_word import menu_translate_word
+from module_statistics import get_static
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -26,7 +27,7 @@ logger = logging.getLogger(__name__)
 GENDER, PHOTO, LOCATION, BIO, TESTS = range(5)
 
 def start_menu(update: Update, context: CallbackContext):
-    reply_keyboard = [['Translate Words 🌏', 'Study Words 📚', 'Take A Quiz 📝']]
+    reply_keyboard = [['Translate Words 🌏', 'Study Words 📚', 'Take A Quiz 📝', 'Statistics 📊']]
 
     update.message.reply_text(
         '<i> Please Click An Option 👇🏻 </i>',
@@ -56,6 +57,11 @@ def gender(update: Update, context: CallbackContext) -> int:
     if(update.message.text == 'Translate Words 🌏'):
         update.message.reply_text('Please Enter A Word To Translate')
         return BIO
+    if(update.message.text == 'Statistics 📊'):
+        update.message.reply_text(get_static(update.effective_chat.id), parse_mode=ParseMode.HTML)
+        start_menu(update, CallbackContext)
+        return GENDER
+
     if(update.message.text == "Lets Go To Test 📝"):
         update.message.reply_text(test_after_translate(update.effective_chat.id))
         return LOCATION
@@ -139,7 +145,7 @@ def main() -> None:
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    TOKEN = '1435032122:AAEmEoNH8Empwoo9OMQbvk2J8VWfBKw_Tk0'
+    TOKEN = '1402469846:AAEDgL_Irb2yvMXEc7009gvUf8bnf125KkY'
 
     updater = Updater(TOKEN, use_context=True)
 
@@ -150,7 +156,7 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            GENDER: [MessageHandler(Filters.regex('^(Translate Words 🌏|Study Words 📚|Take A Quiz 📝|Go Back To Menu ↩️|For Another Test 📝|Test On Words 🆎|Test On Images 🌅)$'), gender)],
+            GENDER: [MessageHandler(Filters.regex('^(Translate Words 🌏|Study Words 📚|Take A Quiz 📝|Statistics 📊|Go Back To Menu ↩️|For Another Test 📝|Test On Words 🆎|Test On Images 🌅)$'), gender)],
             PHOTO: [MessageHandler(Filters.regex('^(Next Word ➡️|Go Back To Menu ↩️|For Another Test 📝)$'), gender)],
             LOCATION: [MessageHandler(Filters.text & ~Filters.command, location)],
             BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
