@@ -6,11 +6,11 @@ def test_word(id, num = 5):
     try:
         ls_of_test_word = find_words_for_test(id, num)
         insert_words_test(id, ls_of_test_word)
-        string_to_return = ""
+        string_to_return = '<b>' + 'Words to translate: \n\n' + '</b>'
         for word in ls_of_test_word:
             string_to_return += word
             string_to_return += '\n'
-        string_to_return += "answer by order with comma between words"
+        string_to_return += '<b>' + '\nAnswer by order with comma between the words'+'</b>'
         return string_to_return
     except Exception as e:
         return e
@@ -42,7 +42,7 @@ def check_results(id, string_from_user):
             raise Exception("Not enough words")
         if len(ls_from_user) > len(ls_words_from_test):
             delete_words_from_test(id)
-            raise Exception("To many words")
+            raise Exception("Too many words")
         wrong = []
         for i in range(len(ls_words_from_test)):
             p = ls_from_user[i]
@@ -54,13 +54,13 @@ def check_results(id, string_from_user):
                 update_quantity(id, ls_words_from_test[i])
         if not wrong:
             delete_words_from_test(id)
-            return "You Are Very Smart! Everything is correct\n for more quiz click on /test \n for return click /go_back\n"
+            return "You Are Very Smart! Everything is correct🥳\n"
         else:
-            list_of_wrong_word = "Mistakes:\n"
+            list_of_wrong_word = "Your Mistakes Are 😢:\n"
             for i in wrong:
                 list_of_wrong_word += i + ": " + get_translate_word(i) + "\n"
             delete_words_from_test(id)
-            list_of_wrong_word = list_of_wrong_word + "for another quiz click on /test \n for return click /go_back\n"
+            list_of_wrong_word = list_of_wrong_word
             return list_of_wrong_word
     except Exception as e:
         delete_words_from_test(id)

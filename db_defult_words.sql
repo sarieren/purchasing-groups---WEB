@@ -1,9 +1,9 @@
 
--- CREATE TABLE db_defult_words(
---     word varchar (30),
---     in_use bit
+CREATE TABLE db_defult_words(
+    word varchar (30),
+    in_use bit
 
--- );
+);
 INSERT INTO db_defult_words (word , in_use)
 VALUES
 ("a",0),

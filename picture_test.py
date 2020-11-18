@@ -16,7 +16,7 @@ def get_url(id):
         else:
             raise Exception("error in link")
 
-        menu = "Please enter the translation of the image"
+        menu = '<i>' + 'Please enter the description of the image: 👇🏻' + '</i>'
         return menu + '\n\n' + result_url
     except Exception as e:
         raise Exception(e)
@@ -59,15 +59,14 @@ def check_result_picture(id, picture_translate):
 
 
         if(picture_translate in ls_words_from_test):
-            answer = "You're right!!\n\n"
+            answer = "You're right!! 💪🏻\n\n"
         else:
-            answer = "the answer can be:\n"
+            answer = '<b>'+ 'The answers are: ' + '</b>'+'\n'
             for word in ls_words_from_test:
                 answer = answer + word + '\n'
             answer += '\n'
 
         delete_words_from_test(id)
-        menu = "for another quiz with picture click on /picture_test\n for return click /go_back"
-        return answer + menu
+        return answer
     except Exception as e:
         raise Exception(e)

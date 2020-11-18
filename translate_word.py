@@ -8,7 +8,7 @@ def menu_translate_word (id, input):
         if(input == "/translate_word" or input == "/next"):
             return "Please enter one word for translation"
         elif(input == "/go_back"):
-            return insert_or_update_state(id,"main_menu")
+            return insert_or_update_state(id, "main_menu")
         else:
             return translate_word_and_update_db(id, input)
     except:
@@ -27,17 +27,17 @@ def get_translate_word(word_to_translate):
 
 def translate_word_and_update_db(id, word_to_translate):
     try:
-        if(" " in word_to_translate):
-            return "you can translate only one word"
-        else:
-            translate = get_translate_word(word_to_translate)
-            word_update_or_insert(id, word_to_translate)
+        # if(" " in word_to_translate):
+        #     return "You can translate only one word"
+        # else:
+        translate = get_translate_word(word_to_translate)
+        word_update_or_insert(id, word_to_translate)
 
-            menu = "\n\n If you want to translate another word please send another word. \n" \
-                   "To return to the main menu click /go_back"
+        menu = "\n\nSend Another Word To Translate..."
+#<pre>' + str(s) + '</pre>
+        result = "The translation of \t" + "<b>"+ word_to_translate +"</b>"+ "<i>"+"\t is: \t" +"</i>"+ "<b>" +translate +"</b>"+ menu
+        return result
 
-            result = "The translate of " + word_to_translate + "\nis: " + translate + menu
-            return result
 
     except Exception as e:
         return e

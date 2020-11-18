@@ -1,24 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# pylint: disable=W0613, C0116
-# type: ignore[union-attr]
-# This program is dedicated to the public domain under the CC0 license.
-
-"""
-First, a few callback functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-
-Usage:
-Example of a bot-user conversation using ConversationHandler.
-Send /start to initiate the conversation.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
-"""
-
 import logging
 
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update, ParseMode
 from telegram.ext import (
     Updater,
     CommandHandler,
@@ -32,7 +14,9 @@ from telegram.ext import (
 from module_study_word import menu_study_word
 from module_test_word import menu_test_word
 from picture_test import get_url, check_result_picture
+from test_after_translate import test_after_translate
 from translate_word import menu_translate_word
+
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
 )
@@ -41,143 +25,111 @@ logger = logging.getLogger(__name__)
 
 GENDER, PHOTO, LOCATION, BIO, TESTS = range(5)
 
-g =""
 def start_menu(update: Update, context: CallbackContext):
-    reply_keyboard = [['translate', 'study_word', 'quiz']]
+    reply_keyboard = [['Translate Words 🌏', 'Study Words 📚', 'Take A Quiz 📝']]
+
     update.message.reply_text(
-        'please choose ',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+        '<i> Please Click An Option 👇🏻 </i>',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode=ParseMode.HTML
     )
 
 def start(update: Update, context: CallbackContext) -> int:
     start_menu(update,CallbackContext)
-    print("in start")
-    print(update.message.text)
     return GENDER
 
 def gender(update: Update, context: CallbackContext) -> int:
-    print("in gender")
     user = update.message.from_user
-    if(update.message.text=="study_word" or update.message.text=="next" ):
-        s=menu_study_word(update.effective_chat.id,"/study_word")
+    if(update.message.text == 'Study Words 📚' or update.message.text == 'Next Word ➡️' ):
+        s = menu_study_word(update.effective_chat.id,'/study_word')
         context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=str(s))
-        reply_keyboard = [['next', 'go_back']]
+                             text=str(s),parse_mode=ParseMode.HTML)
+        reply_keyboard = [['Next Word ➡️', 'Go Back To Menu ↩️']]
         update.message.reply_text(
-            'hey',
-            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+            '<i> Please Click An Option 👇🏻</i>',
+            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode=ParseMode.HTML
         )
         return PHOTO
-    if(update.message.text=="go_back"):
+
+    if(update.message.text == 'Go Back To Menu ↩️'):
         start_menu(update, CallbackContext)
         return GENDER
-    if(update.message.text=="translate"):
-        update.message.reply_text('please enter a word')
+    if(update.message.text == 'Translate Words 🌏'):
+        update.message.reply_text('Please Enter A Word To Translate')
         return BIO
-    if update.message.text== "quiz" or update.message.text== "more_test":
-        reply_keyboard = [['words_test'], ['photo_test'],['go_back']]
+    if(update.message.text == "Lets Go To Test 📝"):
+        update.message.reply_text(test_after_translate(update.effective_chat.id))
+        return LOCATION
+    if update.message.text == 'Take A Quiz 📝' or update.message.text == 'For Another Test 📝':
+        reply_keyboard = [['Test On Words 🆎'], ['Test On Images 🌅'], ['Go Back To Menu ↩️']]
         update.message.reply_text(
-            'hey',
-            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+            '<i> Please Click An Option 👇🏻</i>',
+            reply_markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode=ParseMode.HTML
         )
         return GENDER
-    if (update.message.text == "words_test"):
-           s=menu_test_word(update.effective_chat.id,"/test")
-           update.message.reply_text(s)
+    if (update.message.text == 'Test On Words 🆎'):
+           s = menu_test_word(update.effective_chat.id,'/test')
+           update.message.reply_text(s, parse_mode=ParseMode.HTML)
            return LOCATION
-    if (update.message.text == "photo_test"):
-           s=get_url(update.effective_chat.id)
-           update.message.reply_text(s)
+    if (update.message.text == 'Test On Images 🌅'):
+           s = get_url(update.effective_chat.id)
+           update.message.reply_text(s, parse_mode=ParseMode.HTML)
            return TESTS
-
-
     else:
-        print("here")
-        print(update.message.text)
         return ConversationHandler.END
-
-def photo(update: Update, context: CallbackContext) -> int:
-    print("in photo")
-    user = update.message.from_user
-    photo_file = update.message.photo[-1].get_file()
-    photo_file.download('user_photo.jpg')
-    logger.info("Photo of %s: %s", user.first_name, 'user_photo.jpg')
-    update.message.reply_text(
-        'Gorgeous! Now, send me your location please, ' 'or send /skip if you don\'t want to.'
-    )
-
-    return LOCATION
-
-
-def skip_photo(update: Update, context: CallbackContext) -> int:
-    user = update.message.from_user
-    logger.info("User %s did not send a photo.", user.first_name)
-    update.message.reply_text(
-        'I bet you look great! Now, send me your location please, ' 'or send /skip.'
-    )
-
-    return LOCATION
 
 
 def location(update: Update, context: CallbackContext) -> int:
-    if (update.message.text == "go_back"):
+    if (update.message.text == 'Go Back To Menu ↩️'):
         start_menu(update, CallbackContext)
         return GENDER
-    print("in location")
     s = menu_test_word(update.effective_chat.id, update.message.text)
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=str(s))
-    reply_keyboard = [['more_test', 'go_back']]
+                             text=str(s), parse_mode=ParseMode.HTML)
+    reply_keyboard = [['For Another Test 📝', 'Go Back To Menu ↩️']]
     update.message.reply_text(
-        'hey',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+        '<i> Please Click An Option 👇🏻</i>',
+        reply_markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode=ParseMode.HTML
     )
     return GENDER
-
-
-def skip_location(update: Update, context: CallbackContext) -> int:
-    user = update.message.from_user
-    logger.info("User %s did not send a location.", user.first_name)
-    update.message.reply_text(
-        'You seem a bit paranoid! ' 'At last, tell me something about yourself.'
-    )
-
-    return BIO
-
 
 def bio(update: Update, context: CallbackContext) -> int:
-    print("in bio")
-    if (update.message.text == "go_back"):
+    if (update.message.text == "Lets Go To Test 📝"):
+        s = test_after_translate(update.effective_chat.id)
+        update.message.reply_text(s, parse_mode=ParseMode.HTML)
+        return LOCATION
+    if (update.message.text == 'Go Back To Menu ↩️'):
         start_menu(update, CallbackContext)
         return GENDER
     user = update.message.from_user
-    s=menu_translate_word(update.effective_chat.id, update.message.text)
-    update.message.reply_text(s)
-    reply_keyboard = [['go_back']]
+    s = menu_translate_word(update.effective_chat.id, update.message.text)
+    split_s = s.split('\n\n')
+    update.message.reply_text(split_s[0], parse_mode=ParseMode.HTML)
+    reply_keyboard = [["Lets Go To Test 📝"]]
     update.message.reply_text(
-            'hey',
-            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+            split_s[1],
+            reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode=ParseMode.HTML
         )
     return BIO
+
 def tests(update: Update, context: CallbackContext) -> int:
-    if (update.message.text == "go_back"):
+    if (update.message.text == 'Go Back To Menu ↩️'):
         start_menu(update, CallbackContext)
         return GENDER
-    print("in location")
     s = check_result_picture(update.effective_chat.id, update.message.text)
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text=str(s))
-    reply_keyboard = [['more_test', 'go_back']]
+                             text=str(s), parse_mode=ParseMode.HTML)
+    reply_keyboard = [['For Another Test 📝', 'Go Back To Menu ↩️']]
     update.message.reply_text(
-        'hey',
-        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+       '<i> Please Click An Option 👇🏻</i>',
+        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode=ParseMode.HTML
     )
     return GENDER
+
 def cancel(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     logger.info("User %s canceled the conversation.", user.first_name)
     update.message.reply_text(
-        'Bye! I hope we can talk again some day.', reply_markup=ReplyKeyboardRemove()
+        'Bye! I hope we can learn English together again some day.', reply_markup=ReplyKeyboardRemove()
     )
 
     return ConversationHandler.END
@@ -187,7 +139,7 @@ def main() -> None:
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    TOKEN = '1267251022:AAGxFzIuefMui68W-YF-gHBg2nv08CJ1Vd8'
+    TOKEN = '1435032122:AAEmEoNH8Empwoo9OMQbvk2J8VWfBKw_Tk0'
 
     updater = Updater(TOKEN, use_context=True)
 
@@ -198,8 +150,8 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
-            GENDER: [MessageHandler(Filters.regex('^(translate|study_word|quiz|go_back|more_test|words_test|photo_test)$'), gender)],
-            PHOTO: [MessageHandler(Filters.regex('^(next|go_back|more_test)$'), gender)],
+            GENDER: [MessageHandler(Filters.regex('^(Translate Words 🌏|Study Words 📚|Take A Quiz 📝|Go Back To Menu ↩️|For Another Test 📝|Test On Words 🆎|Test On Images 🌅)$'), gender)],
+            PHOTO: [MessageHandler(Filters.regex('^(Next Word ➡️|Go Back To Menu ↩️|For Another Test 📝)$'), gender)],
             LOCATION: [MessageHandler(Filters.text & ~Filters.command, location)],
             BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
             TESTS: [MessageHandler(Filters.text & ~Filters.command, tests)]
@@ -218,5 +170,5 @@ def main() -> None:
     updater.idle()
 
 
-if __name__ == '__main__':
-    main()
+
+main()
