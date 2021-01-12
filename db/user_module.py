@@ -29,9 +29,9 @@ def exist(user):
     return False
 
 
-def sign_in(user):
+def authenticate(user_name, password):
     query = '''SELECT count(*) FROM user 
-    WHERE user_name = '{}' and user_mail = '{}' and user_password = '{}'  '''.format(user.user_name, user.user_mail, user.user_password)
+    WHERE user_name = '{}' and user_password = '{}'  '''.format(user_name, password)
     res = connection.do_query(query)
     if res[0].get('count(*)') > 0:
         return True
@@ -45,4 +45,3 @@ def get_user_by_name(name):
         user = User(res[0].get("user_name", " "), res[0].get("user_mail", " "), res[0].get("user_password", " "))
         return user
     return None
-
