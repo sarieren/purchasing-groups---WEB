@@ -17,10 +17,10 @@ class Group:
 
 def add(group):
 
-    # query  = '''INSERT INTO groups(group_name, item_name, max_price, category_id, manager, end_date, end_time) 
-    # VALUES('{}', '{}', {}, {}, '{}', '{}', '{}')'''.format(group.group_name, group.item_name, group.max_price,
-    # group.category_id, group.manager, group.end_date, group.end_time)
-    # connection.do_query_with_change(query)
+    query  = '''INSERT INTO groups(group_name, item_name, max_price, category_id, manager, end_date, end_time) 
+    VALUES('{}', '{}', {}, {}, '{}', '{}', '{}')'''.format(group.group_name, group.item_name, group.max_price,
+    group.category_id, group.manager, group.end_date, group.end_time)
+    connection.do_query_with_change(query)
 
     group_id = get_id_group(group)
 
