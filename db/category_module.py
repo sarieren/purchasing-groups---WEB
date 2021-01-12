@@ -20,4 +20,11 @@ def get_list_all_categories():
     return categories
 
 
-print(get_list_all_categories())
+def get_id_from_name(name):
+
+    query = '''SELECT id FROM category where name = '{}' '''.format(name)
+    res = connection.do_query(query)
+
+    if res:
+        return res[0].get("id", 0)
+    return None
