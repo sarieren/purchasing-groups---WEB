@@ -1,4 +1,4 @@
-import db.connection as connection
+import connection as connection
 
 
 class Category:
