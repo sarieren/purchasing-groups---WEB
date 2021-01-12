@@ -18,7 +18,7 @@ class Group:
 
 
 def add(group_):
-    query = '''INSERT INTO `groups`(group_name, item_name, max_price, category_id, manager, end_date, end_time) 
+    query = '''INSERT INTO `groups`(group_name, item_name, max_price, category_id, manager, end_date, end_time, description_group) 
     VALUES('{}', '{}', {}, {}, '{}', '{}', '{}', '{}')'''.format(group_.group_name, group_.item_name, group_.max_price,
                                                            group_.category_id, group_.manager, group_.end_date, group_.end_time,
                                                            group_.description)
