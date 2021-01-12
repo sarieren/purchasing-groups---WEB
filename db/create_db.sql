@@ -1,12 +1,6 @@
+-- CREATE database group_buy;
+USE group_buy; 
 
-
- USE group_buy; 
-
-
-
-CREATE TABLE group(
-    id int NOT NULL PRIMARY KEY
-);
 
 -- CREATE database group_buy;
 
@@ -22,7 +16,7 @@ CREATE TABLE group(
 -- name varchar(50) NOT NULL,
 -- );
 
--- CREATE TABLE group(
+-- CREATE TABLE groups(
 --     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     group_name varchar(50),
 --     item_name varchar(50) NOT NULL,
@@ -35,7 +29,19 @@ CREATE TABLE group(
 --     FOREIGN KEY(category_id) REFERENCES category(id),
 --     FOREIGN KEY(manager) REFERENCES user(user_name)
 
-);
+-- );
+
+-- CREATE TABLE purchaser(
+--     user_name varchar(50) NOT NULL,
+--     group_id int NOT NULL,
+
+--     PRIMARY KEY (user_name, group_id),
+--     FOREIGN KEY(group_id) REFERENCES groups(id),
+--     FOREIGN KEY(user_name) REFERENCES user(user_name)
+
+--     );
+
+
 
 
 
