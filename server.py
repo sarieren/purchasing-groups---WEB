@@ -58,10 +58,6 @@ def register_new_purchaser():
         return app.send_static_file('login.html')
 
 
-
-
-app.run(port=3000, debug = 1)
-
 @app.route('/submit_new_group', methods=['POST'])
 def submit_new_group():
     user_name = request.cookies.get('username')
@@ -84,6 +80,8 @@ def submit_new_group():
 
     # group = Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time)
     # is_added = db.group.add(group)
+
+    return app.send_static_file("index.html")
 
 
 @app.route('/new_group', methods=['GET'])
