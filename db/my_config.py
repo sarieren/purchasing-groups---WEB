@@ -1,3 +1,3 @@
 DB_HOST = "localhost"
 DB_USER = "root"
-DB_PASSWORD = "yehudit1998"
+DB_PASSWORD = "1234"

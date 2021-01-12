@@ -62,7 +62,7 @@ def register_new_purchaser():
         return app.send_static_file('login.html')
 
 
-@app.route('/submit_new_group', methods=['POST'])
+@app.route('/submit_new_group', methods=['POST']) #have to change route to "groups"
 def submit_new_group():
     user_name = request.cookies.get('username')
     data = request.form
@@ -89,6 +89,53 @@ def get_add_new_group():
         return render_template("add_group.html", categories=categories)
     else:
         return redirect(url_for('login'))
+
+
+@app.route("/groups")
+def get_all_gruops():
+    pass
+
+@app.route("/groups/<user>")
+def get_groups_for_user(user):
+    pass
+
+@app.route("/groups_by_category/<category>")
+def get_group_by_category(category):
+    pass
+
+@app.route("/users")
+def get_all_users():
+    pass
+
+@app.route("/users/<user>")
+def get_user_details(user):
+    pass
+
+@app.route("/categories", methods=["POST"])
+def add_category():
+    pass
+
+@app.route("/purchasers", methods=["POST"])
+def add_purchaser_to_group():
+    pass
+
+#OPTIONAL
+@app.route("/imgs/users/<user>")
+def get_user_profile(user):
+    pass
+
+@app.route("/imgs/groups/<group_id>")
+def get_groups_product_imgs(group_id):
+    pass
+
+@app.route("/forums/groups/<group_id>")
+def get_forum_msgs_for_group(group_id):
+    pass
+
+
+
+
+#imgs of products , forum, emails
 
 
 app.run(port=3000, debug=1)

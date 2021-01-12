@@ -1,0 +1,9 @@
+.hidden {
+    /* visibility: hidden; */
+    display: none;
+}
+
+.group_row_in_table:hover {
+    cursor: pointer;
+    background-color: lightgray;
+}
