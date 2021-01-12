@@ -1,4 +1,4 @@
-import db.connection as connection
+import connection
 
 
 class User:
@@ -42,7 +42,29 @@ def get_user_by_name(name):
     WHERE user_name = '{}' '''.format(name)
     res = connection.do_query(query)
     if res:
-        user = User(res[0].get("user_name", " "), res[0].get("user_mail", " "), res[0].get("user_password", " "))
-        return user
+            return get_user(res[0])
     return None
+
+def get_user(dict_user):
+    
+    user_name = dict_user.get("user_name")
+    user_mail = dict_user.get("user_mail")
+    user_password = dict_user.get("user_password")
+    
+    
+    u = User(user_name, user_mail, user_password)
+    return u
+
+
+def get_all_users():
+    users = []
+
+    query = '''SELECT * FROM user'''
+    res = connection.do_query(query)
+    for user in res:
+        users.append(get_user(user))
+
+    return users
+
+
 
