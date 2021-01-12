@@ -2,6 +2,9 @@
 USE group_buy; 
 
 -- drop table purchaser;
+-- drop table groups;
+
+-- drop table purchaser;
 -- drop table `groups`;
 
 
@@ -20,6 +23,8 @@ USE group_buy;
 -- name varchar(50) NOT NULL
 -- );
 
+
+
 -- CREATE TABLE groups(
 --     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     group_name varchar(50),
@@ -30,12 +35,14 @@ USE group_buy;
 --     manager varchar(50) NOT NULL,
 --     end_date DATE,
 --     end_time TIME,
+--     description_group varchar(1000),
 
 
 --     FOREIGN KEY(category_id) REFERENCES category(id),
 --     FOREIGN KEY(manager) REFERENCES user(user_name)
 
 -- );
+
 
 -- CREATE TABLE purchaser(
 --     user_name varchar(50) NOT NULL,
