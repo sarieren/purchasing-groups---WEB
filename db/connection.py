@@ -1,5 +1,5 @@
 import pymysql
-from db.my_config import *
+from db.my_config import DB_HOST, DB_USER, DB_PASSWORD
 
 connection = pymysql.connect(
     host = DB_HOST,

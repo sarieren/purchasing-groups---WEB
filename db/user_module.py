@@ -1,6 +1,4 @@
-
-import db.connection 
-
+import db.connection as connection
 
 
 class User:
@@ -13,7 +11,7 @@ class User:
 def sign_up(user):
 
     if not exist(user):
-        query  = '''INSERT INTO user 
+        query = '''INSERT INTO user 
         VALUES('{}', '{}', '{}')'''.format(user.user_name, user.user_mail, user.user_password)
         connection.do_query_with_change(query)
         return True
