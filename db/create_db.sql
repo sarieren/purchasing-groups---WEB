@@ -13,7 +13,7 @@ USE group_buy;
 
 -- CREATE TABLE category(
 -- id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
--- name varchar(50) NOT NULL,
+-- name varchar(50) NOT NULL
 -- );
 
 -- CREATE TABLE groups(

@@ -7,4 +7,11 @@ USE group_buy;
 -- INSERT INTO user VALUES("sari", "s@gmail", "sss");
 -- INSERT INTO user VALUES("shraga", "sss@", "ghj");
 
+
+-- INSERT INTO category (name) VALUES("furniture");
+-- INSERT INTO category (name) VALUES("electronics");
+-- INSERT INTO category (name) VALUES("Games");
+-- INSERT INTO category (name) VALUES("Bags");
+
 -- select  * From user;
+select  * From category;
