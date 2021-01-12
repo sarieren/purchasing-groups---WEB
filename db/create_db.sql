@@ -24,7 +24,9 @@ USE group_buy;
 
 --     category_id int NOT NULL,
 --     manager varchar(50) NOT NULL,
---     end_time DATETIME,
+--     end_date DATE,
+--     end_time TIME,
+
 
 --     FOREIGN KEY(category_id) REFERENCES category(id),
 --     FOREIGN KEY(manager) REFERENCES user(user_name)
