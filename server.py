@@ -12,7 +12,6 @@ def root():
 @app.route('/submit_login', methods = ['POST'])
 def authenticate():
     is_logged_in = request.cookies.get('logged_in')
-    print(is_logged_in)
     data = request.form
     user_name = data['user_name']
     password = data['password']   
@@ -24,5 +23,9 @@ def authenticate():
         return resp
     else:
         return redirect(url_for('root'))
+
+# @app_route('/register', methods = ['POST'])
+# def register_new_purchaser():
+#     pass
 
 app.run(port=3000, debug = 1)
