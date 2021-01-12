@@ -1,5 +1,6 @@
 import connection
 import purchaser_module
+import category_module
 
 
 class Group:
@@ -41,6 +42,17 @@ def get_id_group(group_):
     return None
 
 
+def get_all_groups():
+    groups = []
+
+    query = '''SELECT * FROM `groups`'''
+    res = connection.do_query(query)
+    for group in res:
+        groups.append(get_group(group))
+
+    return groups
+
+
 def get_all_groups_of_user_name(name):
 
     groups = []
@@ -72,3 +84,17 @@ def get_group(dict_group):
     return g
 
 
+
+
+def get_all_groups_by_categoty_name(name):
+
+    groups = []
+    id_category = category_module.get_id_from_name(name)
+
+    query = '''SELECT * FROM `groups`
+    WHERE category_id = {} '''.format(id_category)
+    res = connection.do_query(query)
+    for group in res:
+        groups.append(get_group(group))
+
+    return groups

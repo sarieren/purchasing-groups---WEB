@@ -28,3 +28,21 @@ def get_id_from_name(name):
     if res:
         return res[0].get("id", 0)
     return None
+
+def add(category):
+    if not exist(category):
+        query = '''INSERT INTO category(name) 
+        VALUES('{}')'''.format(category.name)
+        connection.do_query_with_change(query)
+        return True
+    else:
+        return False
+
+
+def exist(category):
+    query = '''SELECT count(*) FROM category 
+    WHERE name = '{}' '''.format(category.name)
+    res = connection.do_query(query)
+    if res[0].get('count(*)') > 0:
+        return True
+    return False

@@ -29,4 +29,5 @@ USE group_buy;
 --      VALUES("tables", "chair", 250, 1, "sari", '2021-12-02', '18:00');
 
 
--- select  * From `groups`;
+-- select  * From category;
+-- select  category_id From groups;
