@@ -1,4 +1,4 @@
-import connection
+import db.connection as connection
 
 
 class User:

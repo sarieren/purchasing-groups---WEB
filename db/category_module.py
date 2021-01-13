@@ -1,4 +1,4 @@
-import connection as connection
+import db.connection as connection
 
 
 class Category:
@@ -46,3 +46,16 @@ def exist(category):
     if res[0].get('count(*)') > 0:
         return True
     return False
+
+
+
+def get_all_categories():
+    # categories = []
+
+    query = '''SELECT * FROM category'''
+    res = connection.do_query(query)
+    # for category in res:
+    #     categories.append(get_group(group))
+
+    return res
+

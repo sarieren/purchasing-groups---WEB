@@ -1,6 +1,6 @@
-import connection
-import purchaser_module
-import category_module
+import db.connection as connection
+import db.purchaser_module as purchaser_module
+import db.category_module as category_module
 
 
 class Group:
@@ -22,7 +22,7 @@ def add(group_):
     query = '''INSERT INTO `groups`(group_name, item_name, max_price, category_id, manager, end_date, end_time, description_group) 
     VALUES('{}', '{}', {}, {}, '{}', '{}', '{}', '{}')'''.format(group_.group_name, group_.item_name, group_.max_price,
                                                            group_.category_id, group_.manager, group_.end_date, group_.end_time,
-                                                           group_.description)
+                                                           group_.description_group)
     connection.do_query_with_change(query)
 
     group_id = get_id_group(group_)
@@ -67,6 +67,7 @@ def get_all_groups_of_user_name(name):
 
     return groups
 
+
 def get_group(dict_group):
     id_ = dict_group.get("id")
     group_name = dict_group.get("group_name")
@@ -84,8 +85,6 @@ def get_group(dict_group):
     return g
 
 
-
-
 def get_all_groups_by_categoty_name(name):
 
     groups = []
@@ -101,23 +100,18 @@ def get_all_groups_by_categoty_name(name):
 
 
 def get_count_members_to_all_groups():
-
     list_id = get_id_groups()
-
     group_id_and_count = []
     for id_ in list_id:
-        
         query = '''SELECT count(*) FROM purchaser 
         WHERE group_id = {}'''.format(id_)
         res = connection.do_query(query)
         group_id_and_count.append({id_: res[0].get('count(*)')})
-    return group_id_and_count   
-        
+    return group_id_and_count
 
 
 def get_id_groups():
     id_list = []
-
     query = '''SELECT id FROM `groups`'''
     res = connection.do_query(query)
     for id_ in res:

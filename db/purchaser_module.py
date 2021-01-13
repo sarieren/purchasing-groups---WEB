@@ -1,4 +1,4 @@
-import connection as connection
+import db.connection as connection
 
 
 class Purchaser:
