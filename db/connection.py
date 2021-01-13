@@ -25,25 +25,31 @@ except mysql.connector.Error as err:
   else:
     print(err)
 
-
 def do_query_with_change(query_str):
+    connection = mysql.connector.connect(**config)
+
     with connection.cursor() as cursor:
         cursor.execute(query_str)
         connection.commit()
-        return True
+
+    connection.close()
+    return True
 
 
 def do_query(query_str):
+    connection = mysql.connector.connect(**config)
+
     with connection.cursor() as cursor:
         cursor.execute(query_str)
         result = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
         rows = [dict(zip(columns, row)) for row in result]
-        print(rows)
-        return rows
+
+    connection.close()
+    return rows
 
 
 
 
 
-# do_query("select user_name from user")
+# print(do_query("select user_name from user"))

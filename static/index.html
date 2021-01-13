@@ -46,7 +46,7 @@
 
 <body>
     <!--Page loader-->
-    <div class="loader-wrapper">
+    <div class="loader-wrapper" id="loaedr">
         <div class="loader-circle">
             <div class="loader-wave"></div>
         </div>
@@ -62,7 +62,7 @@
 
             <!--Logo-->
             <div class="col-sm-3 pl-0 text-center header-logo">
-                <div class="bg-theme mr-3 pt-3 pb-2 mb-0">
+                <div class="bg-theme mr-3 pt-3 pb-2 mb-0" id ="logo">
                     <h3 class="logo"><a href="#" class="text-secondary logo"><i class="fa fa-users"></i> Group Buy</a>
                     </h3>
                 </div>
@@ -135,10 +135,8 @@
                                 <a class="dropdown-item text-center link-all" href="#">View all messages</a>
                             </div>
                         </span>
-                        <!--Inbox icon-->
-                        <span class="menu-icon">
-                            <i class="fa fa-th-large"></i>
-                        </span>
+                        
+                        
                     </div>
                     <!--Menu Icons -->
 
@@ -192,7 +190,7 @@
                                             class="fa fa-angle-down pull-right align-bottom"></i></span>
                                 </a>
                                 <ul class="children" id="dashboard">
-                                    <li class="child" id="link_show_groups_by_category"><a href="#" class="ml-4"> By
+                                    <li class="child" id="link_show_groups_by_category" ><a href="#" class="ml-4"> By
                                             Category</a></li>
                                     <li class="child" id="link_show_all_groups"><a href="#" class="ml-4"> All Groups</a>
                                     </li>
@@ -206,7 +204,7 @@
                             </li>
                             <li class="parent">
                                 <a href="#" class=""><i class="fa fa-wechat mr-3"></i>
-                                    <span class="none">Your Chats</span>
+                                    <span class="none">Your Forums</span>
                                 </a>
                             </li>
                             <li class="parent" id="link_to_create_new_group">
@@ -229,7 +227,7 @@
 
                 </div>
 
-                <div id="group_details" class="col-sm-9 col-xs-12 content pt-3 pl-0">
+                <div id="group_details" class="col-sm-12 col-xs-12 content pt-3 pl-0 hidden">
                     <h5 class="mb-0"><strong>group detail</strong></h5>
 
                     <div class="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
@@ -238,43 +236,42 @@
                             <div class="row">
                                 <div class="col-sm-5 col-12">
                                     <div class="slider-for border group_details_imgs_of_product"
-                                        id="group_details_imgs_of_product">
-                                        <img src="assets\img\slick1.jpg" alt="">
-                                        <img src="assets\img\slick2.jpg" alt="">
-                                        <img src="assets\img\slick3.jpg" alt="">
-                                        <img src="assets\img\slick4.jpg" alt="">
-                                        <img src="assets\img\slick7.jpg" alt="">
-                                        <img src="assets\img\slick6.jpg" alt="">
+                                        id="group_details_imgs_of_product_1">
+                                        <img id="img1_1" src="assets\img\slick1.jpg" alt="">
+                                        <img id="img1_2" src="assets\img\slick2.jpg" alt="">
+                                        <img id="img1_3" src="assets\img\slick3.jpg" alt="">
+                                        <img id="img1_4" src="assets\img\slick4.jpg" alt="">
+                                        <img id="img1_5" src="assets\img\slick5.jpg" alt="">
+                                        <img id="img1_6" src="assets\img\slick6.jpg" alt="">
                                     </div>
                                     <div class="slider-nav pl-4 pr-4 bg-secondary shadow group_details_imgs_of_product"
-                                        id="group_details_imgs_of_product">
-                                        <img src="assets\img\slick1.jpg" alt="">
-                                        <img src="assets\img\slick2.jpg" alt="">
-                                        <img src="assets\img\slick3.jpg" alt="">
-                                        <img src="assets\img\slick4.jpg" alt="">
-                                        <img src="assets\img\slick7.jpg" alt="">
-                                        <img src="assets\img\slick6.jpg" alt="">
+                                        id="group_details_imgs_of_product_2">
+                                        <img id="img2_1" src="assets\img\slick1.jpg" alt="">
+                                        <img id="img2_2" src="assets\img\slick2.jpg" alt="">
+                                        <img id="img2_3" src="assets\img\slick3.jpg" alt="">
+                                        <img id="img2_4" src="assets\img\slick4.jpg" alt="">
+                                        <img id="img2_5" src="assets\img\slick5.jpg" alt="">
+                                        <img id="img2_6" src="assets\img\slick6.jpg" alt="">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-7 col-12">
                                     <div class="p-2">
                                         <div class="text-right">
-                                            <p class="large"><strong>subscribers:</strong>: <span class="text-primary"
+                                            <h4 class="large"><strong>subscribers:</strong>: <span class="text-primary"
                                                     id="product_details_num_of_subscibers">{num of subscribers}</span>
-                                            </p>
+                                            </h4>
                                         </div>
-                                        <h3 id="short_description_of_group" class="mb-3">{short description of product}
-                                        </h3>
-                                        <p class="small"><strong>Brand:</strong id="brand_of_group_in_details"> {brand
-                                            of product}</p>
+                                        <h2 id="short_description_of_group" class="mb-3">{short description of product}
+                                        </h2>
+                                        <p class="small mb-3"><strong>Category:</strong> <span id="brand_of_group_in_details"> {brandof product}</span></p>
 
 
 
                                         <h5 id="range_sum_for_group_product">{range relevant sum}</h5>
                                         <hr>
 
-                                        <p class="product-slug" id="long_decription_of_group">{long description for
+                                        <p class="product-slug mb-5" id="long_decription_of_group">{long description for
                                             product for group}Mauris pretium dignissim pulvinar. Vivamus lectus ante,
                                             ullamcorper in turpis eu, tristique gravida dui. Nullam mattis lacus et nisl
                                             consequat, id sodales metus luctus. In placerat sed urna at tempor. Duis
@@ -282,9 +279,9 @@
                                             vitae tempor lorem lobortis. Sed vitae diam arcu. Ut sit amet tellus quam.
                                         </p>
                                         <hr>
+                                        <h4 class="mt-5 mb-5">Manager is: <span id="group_manager"> </span>,  Due Date is: <span id="group_duedate"></span></h4>
 
-
-                                        <div>
+                                        <div class="buttom_float">
                                             <button type="button" id="btn_subscribe"
                                                 class="btn btn-theme rounded-0 mr-3 px-3">
                                                 <i class="fa fa-shopping-cart mr-3"></i> SUBSCRIBE
@@ -500,221 +497,6 @@
                     </div>
 
                 </div>
-
-
-
-
-                <div class="col-sm-9 col-xs-12 content pt-3 pl-0">
-                    <h2 class="mb-0"><strong>Create New Group</strong></h2>
-
-                    <div class="row mt-3">
-                        <div class="col-sm-12">
-                            <!--Form wizard-->
-                            <div class="mt-1 mb-3 p-3 button-container bg-white border shadow-sm">
-                                <h6>Wizard with validation</h6>
-                                <p>Wizard gives you a possibility to use separate form into steps</p>
-
-                                <div class="wizard-container">
-                                    <div class="card wizard-card" data-color="theme" id="wizardProfile">
-                                        <form action="" method="">
-                                            <!--        You can switch " data-color="orange" "  with one of the next bright colors: "blue", "green", "orange", "red", "azure"          -->
-
-                                            <div class="wizard-header text-center">
-                                                <h3 class="wizard-title">Create your profile</h3>
-                                                <p class="category">This information will let us know more about
-                                                    you.</p>
-                                            </div>
-
-                                            <div class="wizard-navigation">
-                                                <div class="progress-with-circle">
-                                                    <div class="progress-bar" role="progressbar" aria-valuenow="1"
-                                                        aria-valuemin="1" aria-valuemax="3" style="width: 21%;"></div>
-                                                </div>
-                                                <ul>
-                                                    <li>
-                                                        <a href="#about" data-toggle="tab">
-                                                            <div class="icon-circle">
-                                                                <i class="ti-user"></i>
-                                                            </div>
-                                                            About
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#account" data-toggle="tab">
-                                                            <div class="icon-circle">
-                                                                <i class="ti-settings"></i>
-                                                            </div>
-                                                            Work
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#address" data-toggle="tab">
-                                                            <div class="icon-circle">
-                                                                <i class="ti-map"></i>
-                                                            </div>
-                                                            Address
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="tab-content">
-                                                <div class="tab-pane" id="about">
-                                                    <div class="row">
-                                                        <div class="col-sm-10 offset-sm-1">
-                                                            <h6 class="info-text text-center"> Please tell us
-                                                                more about yourself.</h6>
-                                                            <div class="row">
-                                                                <div class="col-sm-4">
-                                                                    <div class="picture-container">
-                                                                        <div class="picture">
-                                                                            <img src="assets\img\default-avatar.jpg"
-                                                                                class="picture-src"
-                                                                                id="wizardPicturePreview" title="" />
-                                                                            <input type="file" id="wizard-picture">
-                                                                        </div>
-                                                                        <h6>Choose Picture</h6>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-sm-8">
-                                                                    <div class="form-group">
-                                                                        <label>First Name
-                                                                            <small>(required)</small></label>
-                                                                        <input name="firstname" type="text"
-                                                                            class="form-control"
-                                                                            placeholder="Andrew...">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label>Last Name
-                                                                            <small>(required)</small></label>
-                                                                        <input name="lastname" type="text"
-                                                                            class="form-control" placeholder="Smith...">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-sm-10 offset-sm-1">
-                                                            <div class="form-group">
-                                                                <label>Email <small>(required)</small></label>
-                                                                <input name="email" type="email" class="form-control"
-                                                                    placeholder="andrew@creative-tim.com">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane" id="account">
-                                                    <h5 class="info-text"> What are you doing? (checkboxes)
-                                                    </h5>
-                                                    <div class="row">
-                                                        <div class="col-sm-4">
-                                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                                <input type="checkbox" name="jobb" value="Design">
-                                                                <div class="card card-checkboxes card-hover-effect">
-                                                                    <i class="ti-paint-roller"></i>
-                                                                    <p>Design</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                                <input type="checkbox" name="jobb" value="Code">
-                                                                <div class="card card-checkboxes card-hover-effect">
-                                                                    <i class="ti-pencil-alt"></i>
-                                                                    <p>Code</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                                <input type="checkbox" name="jobb" value="Develop">
-                                                                <div class="card card-checkboxes card-hover-effect">
-                                                                    <i class="ti-star"></i>
-                                                                    <p>Develop</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane" id="address">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <h5 class="info-text"> Are you living in a nice
-                                                                area? </h5>
-                                                        </div>
-                                                        <div class="col-sm-7 col-sm-offset-1">
-                                                            <div class="form-group">
-                                                                <label>Street Name</label>
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="5h Avenue">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label>Street Number</label>
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="242">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-5 col-sm-offset-1">
-                                                            <div class="form-group">
-                                                                <label>City</label>
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="New York...">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-5">
-                                                            <div class="form-group">
-                                                                <label>Country</label><br>
-                                                                <select name="country" class="form-control">
-                                                                    <option value="Afghanistan"> Afghanistan
-                                                                    </option>
-                                                                    <option value="Albania"> Albania </option>
-                                                                    <option value="Algeria"> Algeria </option>
-                                                                    <option value="American Samoa"> American
-                                                                        Samoa </option>
-                                                                    <option value="Andorra"> Andorra </option>
-                                                                    <option value="Angola"> Angola </option>
-                                                                    <option value="Anguilla"> Anguilla </option>
-                                                                    <option value="Antarctica"> Antarctica
-                                                                    </option>
-                                                                    <option value="...">...</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="wizard-footer">
-                                                <div class="pull-right">
-                                                    <input type='button' class='btn btn-next btn-fill btn-theme btn-wd'
-                                                        name='next' value='Next' />
-                                                    <input type='button'
-                                                        class='btn btn-finish btn-fill btn-theme btn-wd' name='finish'
-                                                        value='Finish' />
-                                                </div>
-
-                                                <div class="pull-left">
-                                                    <input type='button' class='btn btn-previous btn-default btn-wd'
-                                                        name='previous' value='Previous' />
-                                                </div>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div> <!-- wizard container -->
-
-                            </div>
-                            <!--/Form wizard-->
-                        </div>
-                    </div>
-
-
-                </div>
-
-
-
-
 
                 <!--Footer-->
                 <div class="row mt-5 mb-4 footer">

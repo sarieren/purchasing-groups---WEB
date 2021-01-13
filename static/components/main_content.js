@@ -7,12 +7,11 @@ const table_of_groups = `
 
         <div class="row mb-0 px-3 pt-3">
             <div class="col-sm-8 pt-2">
-                <h6 class="mb-4 bc-header">Recent Groups</h6>
+                <h6 class="mb-4 bc-header">{0}</h6>
             </div>
             <div class="col-sm-4 text-right pb-3">
                 <div class="pull-right mr-3 btn-order-bulk">
-                    <button class="btn btn-theme btn-round" id="btn_view_all_groups_in_list">View
-                        all</button>
+                    <button class="btn btn-theme btn-round" id="btn_view_all_groups_in_list" onclick="{3}">{1}</button>
                 </div>
 
                 <div class="clearfix"></div>
@@ -27,10 +26,10 @@ const table_of_groups = `
                         <th>Product</th>
                         <th>Subscibers</th>
                         <th>Category</th>
-                        <th>Popularity</th>
+                        <th>Due Date</th>
                     </tr>
                 </thead>
-                <tbody class="rows_of_recent_groups_table"></tbody>
+                <tbody id="rows_of_recent_groups_table_{2}"></tbody>
 
             </table>
         </div>
@@ -44,7 +43,7 @@ const main_content = `
 
     <div class="col-sm-12 col-md-4">
         <!--Analytics-->
-        <div class="bg-white border shadow mb-4">
+        <div class="bg-white border shadow mb-4 mt-4">
             <div class="media p-4">
                 <div class="align-self-center mr-3 rounded-circle notify-icon_2 bg-white">
                     <i class="fa fa-globe text-theme"></i>
@@ -156,27 +155,24 @@ const main_content = `
 
 
  const get_group_row_element_for_all_group_list = _.template(`
-<tr id="group_line_<%= group_id %>" class="group_row_in_table">
-<td class="align-middle"><%= product_name %></td>
+<tr id="group_line_<%= group_id %>" class="group_row_in_table pl-3 pr-3" onclick="route_to_group_details(<%= group_id %>)">
+<td class="align-middle px-4"><%= group_name %></td>
 <td class="align-middle">
-    <div class="customers">
-        <span class="customer-circle"
-            style="background-image: url('assets\\img\\client-img4.png')"></span>
-        <span class="customer-circle"
-            style="background-image: url('assets\\img\\client-img5.png')"></span>
-        <span class="customer-circle"
-            style="background-image: url('assets\\img\\client-img3.png')"></span>
-        <span id="amount_of_subscribers_to_group_in_list" class="customer-circle end text-light text-center pt-2"><%= num_of_subscibers %></span>
+    <div class="customers pt-3">
+        
+        <span class="customer-circle end text-light text-center pt-2 mt-4"><i class="fa fa-user "></i></span>
+        <span class="customer-circle end text-light text-center pt-2 mt-4"><i class="fa fa-user"></i></span>
+        <span id="amount_of_subscribers_to_group_in_list" class="customer-circle end text-light text-center pt-2 mt-4"><%= num_of_subscibers %></span>
     </div>
 </td>
 <td class="align-middle">
     <button class="btn-outline-theme btn-round">
-        mobile
+    <%= category %>
     </button>
 </td>
 <td class="align-middle">
     <div class="progress" style="height: 5px;">
-        <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="<%= popularity %>"
+        <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="50"
             style="width: 85%" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
 </td>
@@ -373,4 +369,50 @@ create_new_group = `
 
 
 </div>
+`
+
+
+
+const categories_component = `
+<div class="col-sm-12 col-xs-12 content pt-3 pl-0">
+<div class="row">
+    <div class="row mb-5 pt-3 justify-content-around">
+        <h6 class="mb-4 bc-header left_float">{0}</h6>
+        <button class="btn btn-theme btn-round right_float" id="btn_view_all_categories_in_list" onclick="{2}">{1}</button>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-sm-12">
+        <!--Cards with image-->
+        <div class="mt-1 mb-3 button-container">
+            <div class="row container_for_categories">
+                
+
+            </div>
+        </div>
+        <!--/Cards with image-->
+
+    </div>
+</div>
+
+
+
+</div>
+`
+
+
+
+
+const category_card = `
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <div class="card" id="category_{2}" onclick="route_to_groups_for_category({2})">
+                        <img class="card-img-top" id=category_img_{2}" src="{3}" alt="category image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{0}</h5>
+                            <p class="card-text">{1}</p>
+                            <!--<a href="#" class="btn btn-theme text-white">Foward</a> -->
+                        </div>
+                    </div>
+                </div>
 `
