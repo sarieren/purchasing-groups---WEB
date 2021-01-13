@@ -134,10 +134,6 @@ def get_all_users():
 
 
 
-@app.route("/api/imgs/categories/<category>")
-def get_random_img_for_category(category):
-    return api_picture.get_picture(category)
-
 
 @app.route("/users/<user>")
 def get_user_details(user):
@@ -163,7 +159,7 @@ def add_purchaser_to_group():
 def group_to_dict(group_tuple):
     G = group_tuple[0]
     num_of_subsribers = group_tuple[1]
-    return {
+    obj =  {
         "group_id": G.id_,
         "group_name": G.group_name,
         "num_of_subscibers": num_of_subsribers,
@@ -171,9 +167,14 @@ def group_to_dict(group_tuple):
         "max_price": G.max_price,
         "manager": G.manager,
         "category": category_module.get_name_from_id(G.category_id), 
-        "end_data": G.end_data,
+        "end_date": G.end_date,
         "description_group": G.description_group
     }
+    return obj
 
 
 app.run(port=3000, debug=1)
+# get_all_gruops()
+
+
+

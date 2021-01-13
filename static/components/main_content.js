@@ -188,7 +188,7 @@ const categories_component = `
     <div class="col-sm-12">
         <!--Cards with image-->
         <div class="mt-1 mb-3 button-container">
-            <div class="row container_for_categories">
+            <div class="card-columns container_for_categories">
                 
 
             </div>
@@ -207,7 +207,8 @@ const categories_component = `
 
 
 const category_card = `
-                <div class="col-md-3 col-sm-6 mb-3">
+                
+                <div class=" mb-3 ">
                     <div class="card" id="category_{2}" onclick="route_to_groups_for_category({2})">
                         <img class="card-img-top" id=category_img_{2}" src="{3}" alt="category image cap">
                         <div class="card-body">
@@ -217,12 +218,13 @@ const category_card = `
                         </div>
                     </div>
                 </div>
+                
 `
 
 
 
 const new_group_form = _.template(`
-<div class="col-sm-9 col-xs-12 content pt-3 pl-0">
+<div class="col-sm-12 col-xs-12 content pt-3 pl-0">
 <h5 class="mb-0" ><strong>new group</strong></h5>
 <span class="text-secondary">groups <i class="fa fa-angle-right"></i> add a new group</span>
 

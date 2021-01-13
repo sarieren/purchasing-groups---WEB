@@ -1,6 +1,6 @@
-import db.connection #as connection
-import db.purchaser_module #as purchaser_module
-import db.category_module #as category_module
+import db.connection as connection
+import db.purchaser_module as purchaser_module
+import db.category_module as category_module
 
 
 
@@ -46,11 +46,12 @@ def get_id_group(group_):
 def get_all_groups():
     groups = []
 
-    query = '''SELECT * FROM `groups`'''
+    query = '''SELECT * FROM `groups`  NATURAL JOIN count_members_group WHERE groups.id = count_members_group.group_id'''
     res = connection.do_query(query)
     for group in res:
-        id_ = res[0].get("id")
-        groups.append((get_group(group), get_count_member_by_group_id(id_)))
+        count = group.get("count")
+        del group["count"]
+        groups.append((get_group(group),count))
 
     return groups
 

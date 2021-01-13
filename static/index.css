@@ -54,3 +54,12 @@
 .blue-text{
     color: rgb(6, 6, 134);
 }
+.user_img_letter {
+    /* margin-top:3em; */
+    /* padding-top: -1em; */
+    transform: scale(1.5, 1.5);
+    /* font-size: 24px; */
+}
+.full_height{
+    height: 100%;
+}
