@@ -24,3 +24,16 @@ def exist(purchaser):
     if res[0].get('count(*)') > 0:
         return True
     return False
+
+
+def get_id_group_by_name(name):
+
+    query = '''SELECT group_id FROM purchaser
+    where user_name = '{}' '''.format(name)
+    res = connection.do_query(query)
+
+    groups = []
+    for purchase in res:
+        groups.append(purchase.get("group_id", 0))
+    return groups
+
