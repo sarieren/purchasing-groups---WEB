@@ -5,7 +5,8 @@
 // var content = required("./components/main_content.js")
 // console.log(content)
 $(document).ready(() => {
-    $("#loader").addClass("hidden")
+
+    // $("#loader").css('display', 'block')
     $.when(
         $.ajax({
             url: "components\\main_content.js",
@@ -121,8 +122,7 @@ init_page = () => {
         $("#link_to_create_new_group").click(route_to_create_new_group)
 
         $("#logo").click(route_to_home_page)
-        $("#loader").removeClass("hidden")
-
+        // $("#loader").css('display', 'none')
 
     });
 
@@ -165,6 +165,9 @@ route_to_create_new_group = () => {
     let content = $.parseHTML(new_group_form({"categories":list_all_categories}))
     $("#router-outlet").append(content)
     // $("#router-outlet").html(create_new_group)
+
+    $("#new_group_form_submit").click(post_new_group_form)
+
 }
 
 route_to_all_categories = () => {
@@ -217,7 +220,29 @@ route_to_groups_for_category = (cat_id) => {
     console.log("cate", cat_id)
 }
 
+post_new_group_form = (e) =>{
+    // $("#loader").css('display', 'block')
+    e.preventDefault(); // avoid to execute the actual submit of the form
 
+    
+        $.ajax({ 
+          type: "POST",
+          url: "/submit_new_group", // it's the URL of your component B
+          data: $("#frm1").serialize(), // serializes the form's elements
+          success: function(data)
+          {
+            route_to_home_page()
+
+            // $("#loader").css('display', 'none')
+           // show_alert("success", "You have created a new purchasing group!")
+              console.log("post", data)
+
+            // show the data you got from B in result div
+            //$("#result").html(data);
+          }
+        });
+    //   });
+}
 
 async function route_to_group_details(group_id) {
     //get group details from server , includes imgs
@@ -302,4 +327,11 @@ String.prototype.format = function () {
         a = a.replaceAll("{" + k + "}", arguments[k])
     }
     return a
+}
+
+show_alert  = (status, msg) => {
+    $("#show_alert_success").on('click', function() {
+        swal( status + "!", msg,  status);
+    });
+    $( "#show_alert_success" ).trigger( "click" )
 }

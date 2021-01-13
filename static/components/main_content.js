@@ -429,7 +429,7 @@ const new_group_form = _.template(`
         <!--Blank Page-->
         <div class="mt-1 mb-3 p-3 button-container border bg-white">
             <h6 class="mb-3">Blank page</h6>
-            <form id="frm1" action="/submit_new_group" method="post">
+            <form id="frm1"> <!-- action="/submit_new_group" method="post">-->
             
                 group name: <input type="text" name="group_name"><br>
                 item name: <input type="text" name="item_name"><br>
@@ -449,7 +449,7 @@ const new_group_form = _.template(`
                 
                 group description: <br><textarea  name="group_description" cols="60" rows="5"></textarea>
                 <br>
-                <input type="Submit" value="submit">
+                <input type="button" value="submit" id="new_group_form_submit">
             </form>
             
         </div>
