@@ -2,7 +2,6 @@ $(document).ready(function() {
     
     /*==============Page Loader=======================*/
 
-    $(".loader-wrapper").fadeOut("slow");
 
     /*===============Page Loader=====================*/
 
@@ -47,9 +46,9 @@ $(document).ready(function() {
     });
 
     //Success
-    $("#show_alert_success").on('click', function() {
-        swal("Success!", "You clicked the button successfully!", "success");
-    });
+    // $("#show_alert_success").on('click', function() {
+    //     swal("Success!", "You clicked the button successfully!", "success");
+    // });
 
     //Error
     $("#show_alert_error").on('click', function() {

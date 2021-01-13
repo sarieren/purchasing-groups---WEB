@@ -5,7 +5,8 @@
 // var content = required("./components/main_content.js")
 // console.log(content)
 $(document).ready(() => {
-    $("#loader").addClass("hidden")
+
+     $("#loader").css('display', 'none')
     $.when(
         $.ajax({
             url: "components\\main_content.js",
@@ -121,8 +122,7 @@ init_page = () => {
         $("#link_to_create_new_group").click(route_to_create_new_group)
 
         $("#logo").click(route_to_home_page)
-        $("#loader").removeClass("hidden")
-
+        // $("#loader").css('display', 'none')
 
     });
 
@@ -142,8 +142,15 @@ route_to_home_page = () => {
     $("#num_of_app_visitors").text(num_of_app_visitors)
     $("#num_of_visitors_likes").text(num_of_visitors_likes)
     $("#number_of_groups_created").text(number_of_groups_created)
-    console.log("all group", line_all_groups)
-    $("#rows_of_recent_groups_table_recent").html(line_all_groups)
+    console.log("all group", elem_all_groups)
+    $("#rows_of_recent_groups_table_recent").html(elem_all_groups)
+
+    let line_all_recent_groups = ""
+    all_groups.forEach(G => {
+        console.log(G)
+        line_all_recent_groups += get_group_row_element_for_all_group_list(G)
+    });
+    $("#rows_of_recent_groups_table_all").html(line_all_recent_groups)
 
     list_all_categories.forEach(cat => {
         const url = render_random_img(cat.name)
@@ -162,7 +169,12 @@ route_to_create_new_group = () => {
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
+    let content = $.parseHTML(new_group_form({"categories":list_all_categories}))
+    $("#router-outlet").append(content)
     // $("#router-outlet").html(create_new_group)
+
+    $("#new_group_form_submit").click(post_new_group_form)
+
 }
 
 route_to_all_categories = () => {
@@ -215,7 +227,42 @@ route_to_groups_for_category = (cat_id) => {
     console.log("cate", cat_id)
 }
 
+post_new_group_form = (e) =>{
+    // $("#loader").css('display', 'block')
+    e.preventDefault(); // avoid to execute the actual submit of the form
 
+    
+        $.ajax({ 
+          type: "POST",
+          url: "/submit_new_group", // it's the URL of your component B
+          data: $("#frm1").serialize(), // serializes the form's elements
+          success: function(G)
+          {
+            all_groups.push({
+                group_id: G.id_,
+                group_name: G.group_name,
+                num_of_subscibers: 8,
+                item_name: G.item_name,
+                max_price: G.max_price,
+                manager: G.manager,
+                category: cat_ob[G.category_id],
+                end_data: G.end_data,
+                description_group: G.description_group
+
+            })
+              
+            route_to_home_page()
+
+            // $("#loader").css('display', 'none')
+            show_alert("success", "You have created a new purchasing group!")
+            console.log("post", data)
+
+            // show the data you got from B in result div
+            //$("#result").html(data);
+          }
+        });
+    //   });
+}
 
 async function route_to_group_details(group_id) {
     //get group details from server , includes imgs
@@ -226,11 +273,7 @@ async function route_to_group_details(group_id) {
 
     //render
     $("#router-outlet").addClass("hidden")
-    // imgs_html_for_group_details = ""
-    // path_imgs_arr.forEach(path => imgs_html_for_group_details += render_img({
-    //     img_path: path
-    // }))
-    // $(".group_details_imgs_of_product").html(imgs_html_for_group_details)
+
     console.log(group)
     $("#product_details_num_of_subscibers").html(group.num_of_subscribers)
     $("#short_description_of_group").html(group.group_name)//item_name)
@@ -244,6 +287,20 @@ async function route_to_group_details(group_id) {
     for(let i = 1; i < 7; i ++){
         let url = render_random_img_by_category(group.category, i)
     }
+
+
+    msgs = [1, 2, 3, 4, 5]
+    $.get("/forums/" + group_id, (res) =>{
+        console.log("forum", res)
+    })
+    user_img_path = "assets\\img\\John-doe.png"
+    //get forum msgs
+    forum = $("#forum_of_group")
+    msgs.forEach(M => {
+        let msg_ele = $.parseHTML(forum_msg.format("sara", "bye", user_img_path, 5, "2 weeks"))
+        forum.append(msg_ele)
+    })
+
 }
 
 
@@ -273,28 +330,31 @@ function render_random_img(category_str) {
     return "https://dalicanvas.co.il/wp-content/uploads/2019/01/%D7%A0%D7%95%D7%A3-%D7%9C%D7%94%D7%A8%D7%99%D7%9D-8.jpg"
 }
 function render_random_img_by_category(category_str, num) {
-    url = `https://source.unsplash.com/600x800/?${category_str}`
+    $.get("/api/imgs/categories/" + category_str, (res) =>{
+        console.log(res)
+    })
+    //url = `https://source.unsplash.com/600x800/?${category_str}`
 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function (e) {
-        if (xhr.status == 200 && xhr.readyState == 4) {
-            console.log(xhr.responseURL)
-            let img1 = $("#img1_" + num)
-            img1.attr("src", xhr.responseURL)
-            let img2 = $("#img2_" + num)
-            img2.attr("src", xhr.responseURL)
-            console.log(img1.attr("src"), img2)
-            return xhr.responseURL
-            // console.log("#" + img_id)
-            // $("#" + img_id).attr("src", img_url)
-            // console.log(document.getElementById(img_id),   img_id)
-            // new_item = $("#" + img_id).clone()
-            // $("#container_for_categories").append(new_item)
+    // var xhr = new XMLHttpRequest();
+    // xhr.onreadystatechange = function (e) {
+    //     if (xhr.status == 200 && xhr.readyState == 4) {
+    //         console.log(xhr.responseURL)
+    //         let img1 = $("#img1_" + num)
+    //         img1.attr("src", xhr.responseURL)
+    //         let img2 = $("#img2_" + num)
+    //         img2.attr("src", xhr.responseURL)
+    //         console.log(img1.attr("src"), img2)
+    //         return xhr.responseURL
+    //         // console.log("#" + img_id)
+    //         // $("#" + img_id).attr("src", img_url)
+    //         // console.log(document.getElementById(img_id),   img_id)
+    //         // new_item = $("#" + img_id).clone()
+    //         // $("#container_for_categories").append(new_item)
 
-        }
-    }
-    xhr.open("GET", url, true);
-    xhr.send();
+    //     }
+    // }
+    // xhr.open("GET", url, true);
+    // xhr.send();
 }
 
 
@@ -304,4 +364,11 @@ String.prototype.format = function () {
         a = a.replaceAll("{" + k + "}", arguments[k])
     }
     return a
+}
+
+show_alert  = (status, msg) => {
+    $("#show_alert_success").on('click', function() {
+        swal( status + "!", msg,  status);
+    });
+    $( "#show_alert_success" ).trigger( "click" )
 }

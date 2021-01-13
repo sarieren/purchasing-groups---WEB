@@ -7,6 +7,7 @@ import db.group_module as group_module
 import db.purchaser_module as purchaser_module
 import db.forums_module as forums_module
 import json
+import db.api_picture as api_picture
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 
@@ -87,6 +88,7 @@ def register_new_purchaser():
 def launch_homepage():
    return app.send_static_file("index.html")
 
+
 @app.route('/submit_new_group', methods=['POST']) #have to change route to "groups"
 def submit_new_group():
     user_name = request.cookies.get('username')
@@ -104,7 +106,8 @@ def submit_new_group():
     group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
     group_module.add(group)
 
-    return redirect(url_for('launch_homepage'))
+    return group.__dict__
+    #return redirect(url_for('launch_homepage'))
 
 
 @app.route('/new_group', methods=['GET'])
@@ -139,8 +142,11 @@ def get_group_by_category(category_name):
 
 @app.route("/users")
 def get_all_users():
-    return Response(json.dumps([U.__dict__ for U in user_module.get_all_users()  ]), 200)
+    return Response(json.dumps([U.__dict__ for U in user_module.get_all_users() ]), 200)
 
+@app.route("/api/imgs/categories/<category>")
+def get_random_img_for_category(category):
+    return api_picture.get_picture(category)
 
 @app.route("/users/<user>")
 def get_user_details(user):

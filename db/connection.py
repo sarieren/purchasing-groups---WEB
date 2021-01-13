@@ -49,6 +49,3 @@ def do_query(query_str):
 
     connection.close()
     return rows
-
-
-# print(do_query("select user_name from user"))
