@@ -70,11 +70,13 @@ def authenticate():
     else:
         return redirect(url_for('root'))
 
-@app.route('/register', methods = ['GET'])
+
+@app.route('/register', methods=['GET'])
 def launch_register_form():
     return app.send_static_file('register.html')
 
-@app.route('/register', methods = ['POST'])
+
+@app.route('/register', methods=['POST'])
 def register_new_purchaser():
     data = request.form
     user_name = data['user_name']
@@ -92,12 +94,13 @@ def register_new_purchaser():
         #pop error message
         return redirect(url_for('login'))
 
+
 @app.route('/groupBy', methods=['GET'])
 def launch_homepage():
    return app.send_static_file("index.html")
 
 
-@app.route('/submit_new_group', methods=['POST']) #have to change route to "groups"
+@app.route('/submit_new_group', methods=['POST'])  # have to change route to "groups"
 def submit_new_group():
     user_name = request.cookies.get('username')
     data = request.form
@@ -112,10 +115,11 @@ def submit_new_group():
 
     category_id = category_module.get_id_from_name(category)
     group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
-    group_module.add(group)
+    is_added = group_module.add(group)
 
-    return group.__dict__
-    #return redirect(url_for('launch_homepage'))
+    if not is_added:
+        return {}, 500
+    return group.__dict__, 201  # app.send_static_file("index.html")
 
 
 @app.route('/new_group', methods=['GET'])
@@ -152,9 +156,11 @@ def get_group_by_category(category_name):
 def get_all_users():
     return Response(json.dumps([U.__dict__ for U in user_module.get_all_users() ]), 200)
 
+
 @app.route("/api/imgs/categories/<category>")
 def get_random_img_for_category(category):
     return api_picture.get_picture(category)
+
 
 @app.route("/users/<user>")
 def get_user_details(user):
@@ -165,10 +171,20 @@ def get_user_details(user):
 def add_category():
     #add(category object) in category_module
     pass
+
+
 @app.route("/purchasers", methods=["POST"])
 def add_purchaser_to_group():
-    #add(purchaser) in purchaser module
-    pass
+    data = request.form
+    user_name = data["user_name"]
+    group_id = data["group_id"]
+
+    purchaser = purchaser_module.Purchaser(user_name, group_id)
+    is_added = purchaser_module.add(purchaser)
+
+    if not is_added:
+        return {}, 500
+    return purchaser.__dict__, 201
 
 
 # #OPTIONAL

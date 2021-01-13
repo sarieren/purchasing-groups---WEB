@@ -96,7 +96,7 @@ init_page = () => {
 
         elem_all_groups = ""
         list_all_groups.forEach(G => {
-            onsole.log(G)
+            console.log(G)
             elem_all_groups += get_group_row_element_for_all_group_list(G)
         });
         elem_all_groups = $.parseHTML(elem_all_groups)
@@ -160,6 +160,28 @@ route_to_home_page = () => {
 }
 
 subscribe_user_to_group = (group_id) => {
+    //get user and main data from cookie
+    user_name = document.cookie.split("username=")[1]
+
+    data_dict  = {
+            "group_id": group_id,
+            "user_name": user_name
+        }
+
+    $.ajax({
+          type: "POST",
+          url: "/submit_new_group", // it's the URL of your component B
+          data: data_dict
+          success: function(G)
+          {
+            show_alert("success", "You have been to the purchasing group")
+            console.log("post", data)
+          },
+          error: function(data)
+          {
+            show_alert("error", "there was a problem with the subscription, please try again")
+          }
+    });
     console.log("user subscribes to group")
 }
 
@@ -171,9 +193,13 @@ route_to_create_new_group = () => {
     $("#router-outlet").empty()
     let content = $.parseHTML(new_group_form({"categories":list_all_categories}))
     $("#router-outlet").append(content)
+    date = format_date(new Date())
+    console.log(date)
+    $('#date_').attr("min", date)
     // $("#router-outlet").html(create_new_group)
 
-    $("#new_group_form_submit").click(post_new_group_form)
+//    $("#frm1").submit(post_new_group_form)
+    $(document).on('submit','#frm1',post_new_group_form)
 
 }
 
@@ -238,19 +264,19 @@ post_new_group_form = (e) =>{
           data: $("#frm1").serialize(), // serializes the form's elements
           success: function(G)
           {
-            all_groups.push({
-                group_id: G.id_,
-                group_name: G.group_name,
-                num_of_subscibers: 8,
-                item_name: G.item_name,
-                max_price: G.max_price,
-                manager: G.manager,
-                category: cat_ob[G.category_id],
-                end_data: G.end_data,
-                description_group: G.description_group
+                all_groups.push({
+                    group_id: G.id_,
+                    group_name: G.group_name,
+                    num_of_subscibers: 8,
+                    item_name: G.item_name,
+                    max_price: G.max_price,
+                    manager: G.manager,
+                    category: cat_ob[G.category_id],
+                    end_data: G.end_data,
+                    description_group: G.description_group
 
-            })
-              
+                })
+
             route_to_home_page()
 
             // $("#loader").css('display', 'none')
@@ -259,8 +285,13 @@ post_new_group_form = (e) =>{
 
             // show the data you got from B in result div
             //$("#result").html(data);
-          }
-        });
+        },
+        error: function(data)
+        {
+            show_alert("error", "there was a problem with adding a new group, please try again")
+        }
+    });
+
     //   });
 }
 
@@ -411,4 +442,23 @@ show_alert  = (status, msg) => {
         swal( status + "!", msg,  status);
     });
     $( "#show_alert_success" ).trigger( "click" )
+}
+
+
+
+
+format_date = (date) => {
+    var dd = date.getDate()
+    var mm = date.getMonth()+1;
+    var yyyy = date.getFullYear();
+    if(dd < 10)
+    {
+        dd = '0' + dd;
+    }
+    if(mm < 10)
+    {
+        mm = '0' + mm;
+    }
+    today = yyyy + '-' + mm + '-' + dd;
+    return today
 }

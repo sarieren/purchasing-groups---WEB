@@ -48,7 +48,8 @@ def get_all_groups():
     query = '''SELECT * FROM `groups`'''
     res = connection.do_query(query)
     for group in res:
-        groups.append(get_group(group))
+        id_ = res[0].get("id")
+        groups.append((get_group(group), get_count_member_by_group_id(id_)))
 
     return groups
 
@@ -99,15 +100,13 @@ def get_all_groups_by_categoty_name(name):
     return groups
 
 
-def get_count_members_to_all_groups():
-    list_id = get_id_groups()
-    group_id_and_count = []
-    for id_ in list_id:
-        query = '''SELECT count(*) FROM purchaser 
-        WHERE group_id = {}'''.format(id_)
-        res = connection.do_query(query)
-        group_id_and_count.append({id_: res[0].get('count(*)')})
-    return group_id_and_count
+def get_count_member_by_group_id(id_):
+
+    query = '''SELECT count(*) FROM purchaser 
+    WHERE group_id = {}'''.format(id_)
+    res = connection.do_query(query)
+   
+    return res[0].get('count(*)')
 
 
 def get_id_groups():

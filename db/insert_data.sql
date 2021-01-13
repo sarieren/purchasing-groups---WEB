@@ -31,4 +31,4 @@ USE group_buy;
 
 -- select  * From category;
 -- select  category_id From groups;
-select count(*) from user;
+select count(*) from groups;
