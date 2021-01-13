@@ -6,7 +6,7 @@ from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-import connection as connection
+import db.connection as connection
 
 MY_ADDRESS = 'shoshnacohen@gmail.com'
 PASSWORD = 'Sari1998@'

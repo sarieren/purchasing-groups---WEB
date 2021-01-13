@@ -240,11 +240,11 @@ const new_group_form = _.template(`
             <h6 class="mb-3">Blank page</h6>
             <form id="frm1"> <!-- action="/submit_new_group" method="post">-->
             
-                group name: <input type="text" name="group_name"><br>
-                item name: <input type="text" name="item_name"><br>
-                max price: <input type="number" name="max_price"><br>
+                group name: <input type="text" name="group_name"required><br>
+                item name: <input type="text" name="item_name" required ><br>
+                max price: <input type="number" name="max_price" required><br>
                 
-                category: <select class="px-2" name="category" id="category">
+                category: <select class="px-2" name="category" id="category" required>
                    <!-- {% for category in categories %}
                         <option value={{category}}>{{category}}</option>
                     {%endfor%}-->
@@ -254,11 +254,11 @@ const new_group_form = _.template(`
                     <% }); %>
                 </select><br>
                 
-                end time for purchas:	day: <input type="date" name="end_time_day">	time: <input type="time" name="end_time_time"><br>
+                end time for purchas:	day: <input type="date" id="date_" name="end_time_day" min="2021-01-01" required>	time: <input type="time" name="end_time_time" required><br>
                 
                 group description: <br><textarea  name="group_description" cols="60" rows="5"></textarea>
                 <br>
-                <input type="button" value="submit" id="new_group_form_submit">
+                <input type="submit" value="submit" id="new_group_form_submit">
             </form>
             
         </div>
