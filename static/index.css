@@ -39,6 +39,18 @@
     transition: transform 1s;
 }
 
-.block_display{
-    display: block !important;
+
+
+#btn_create_new_group{
+    height: 40px;
+    width: 193px;
+    border-radius: 20px;
+    background-color: #2E2E3A;
+    margin: 15px 15px 15px 0;
+    line-height: 41px;
+    font-weight: 500;
+}
+
+.blue-text{
+    color: rgb(6, 6, 134);
 }

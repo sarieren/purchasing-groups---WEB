@@ -6,7 +6,7 @@
 // console.log(content)
 $(document).ready(() => {
 
-    // $("#loader").css('display', 'block')
+     $("#loader").css('display', 'none')
     $.when(
         $.ajax({
             url: "components\\main_content.js",
@@ -287,6 +287,20 @@ async function route_to_group_details(group_id) {
     for(let i = 1; i < 7; i ++){
         let url = render_random_img_by_category(group.category, i)
     }
+
+
+    msgs = [1, 2, 3, 4, 5]
+    $.get("/forums/" + group_id, (res) =>{
+        console.log("forum", res)
+    })
+    user_img_path = "assets\\img\\John-doe.png"
+    //get forum msgs
+    forum = $("#forum_of_group")
+    msgs.forEach(M => {
+        let msg_ele = $.parseHTML(forum_msg.format("sara", "bye", user_img_path, 5, "2 weeks"))
+        forum.append(msg_ele)
+    })
+
 }
 
 
