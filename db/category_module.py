@@ -59,3 +59,9 @@ def get_all_categories():
 
     return res
 
+def get_name_from_id(id_):
+    query = '''SELECT name FROM category where id = {} '''.format(id_)
+    res = connection.do_query(query)
+    if res:
+        return res[0].get("name", 0)
+    return None

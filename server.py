@@ -90,12 +90,12 @@ def submit_new_group():
     group_description = data['group_description']
 
     category_id = category_module.get_id_from_name(category)
-    group = group_module.Group(user_name, group_name, item_name, max_price,
-                               category_id, end_time_day, end_time_time, group_description)
-    group_module.add(group)
+    group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
+    is_added = group_module.add(group)
 
-    return group.__dict__
-    # return redirect(url_for('launch_homepage'))
+    if not is_added:
+        return {}, 500
+    return group.__dict__, 201  # app.send_static_file("index.html")
 
 
 @app.route('/new_group', methods=['GET'])
@@ -131,6 +131,7 @@ def get_group_by_category(category_name):
 @app.route("/users")
 def get_all_users():
     return Response(json.dumps([U.__dict__ for U in user_module.get_all_users()]), 200)
+
 
 
 @app.route("/api/imgs/categories/<category>")
@@ -169,7 +170,7 @@ def group_to_dict(group_tuple):
         "item_name": G.item_name,
         "max_price": G.max_price,
         "manager": G.manager,
-        "category": cat_ob[G.category_id],
+        "category": category_module.get_name_from_id(G.category_id), 
         "end_data": G.end_data,
         "description_group": G.description_group
     }
