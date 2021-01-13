@@ -30,4 +30,4 @@ def get_url_and_enter_to_db(all_links, item_name):
         raise Exception(e)
 
 
-get_picture("table")
+# get_picture("table")

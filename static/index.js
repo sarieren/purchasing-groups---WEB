@@ -6,7 +6,7 @@
 // console.log(content)
 $(document).ready(() => {
 
-    // $("#loader").css('display', 'block')
+     $("#loader").css('display', 'none')
     $.when(
         $.ajax({
             url: "components\\main_content.js",
