@@ -416,3 +416,49 @@ const category_card = `
                     </div>
                 </div>
 `
+
+
+
+const new_group_form = _.template(`
+<div class="col-sm-9 col-xs-12 content pt-3 pl-0">
+<h5 class="mb-0" ><strong>new group</strong></h5>
+<span class="text-secondary">groups <i class="fa fa-angle-right"></i> add a new group</span>
+
+<div class="row mt-3">
+    <div class="col-sm-12">
+        <!--Blank Page-->
+        <div class="mt-1 mb-3 p-3 button-container border bg-white">
+            <h6 class="mb-3">Blank page</h6>
+            <form id="frm1" action="/submit_new_group" method="post">
+            
+                group name: <input type="text" name="group_name"><br>
+                item name: <input type="text" name="item_name"><br>
+                max price: <input type="number" name="max_price"><br>
+                
+                category: <select class="px-2" name="category" id="category">
+                   <!-- {% for category in categories %}
+                        <option value={{category}}>{{category}}</option>
+                    {%endfor%}-->
+
+                    <% _.each( categories, function( category ){ %>
+                        <option class="px-2" value=<%=category.name %>> <%=category.name %></option>    
+                    <% }); %>
+                </select><br>
+                
+                end time for purchas:	day: <input type="date" name="end_time_day">	time: <input type="time" name="end_time_time"><br>
+                
+                group description: <br><textarea  name="group_description" cols="60" rows="5"></textarea>
+                <br>
+                <input type="Submit" value="submit">
+            </form>
+            
+        </div>
+        <!--/Blank Page-->
+
+    </div>
+</div>
+
+
+
+</div>
+`)

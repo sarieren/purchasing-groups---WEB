@@ -142,8 +142,8 @@ route_to_home_page = () => {
     $("#num_of_app_visitors").text(num_of_app_visitors)
     $("#num_of_visitors_likes").text(num_of_visitors_likes)
     $("#number_of_groups_created").text(number_of_groups_created)
-    console.log("all group", line_all_groups)
-    $("#rows_of_recent_groups_table_recent").html(line_all_groups)
+    console.log("all group", elem_all_groups)
+    $("#rows_of_recent_groups_table_recent").html(elem_all_groups)
 
     list_all_categories.forEach(cat => {
         const url = render_random_img(cat.name)
@@ -162,6 +162,8 @@ route_to_create_new_group = () => {
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
+    let content = $.parseHTML(new_group_form({"categories":list_all_categories}))
+    $("#router-outlet").append(content)
     // $("#router-outlet").html(create_new_group)
 }
 
@@ -226,11 +228,7 @@ async function route_to_group_details(group_id) {
 
     //render
     $("#router-outlet").addClass("hidden")
-    // imgs_html_for_group_details = ""
-    // path_imgs_arr.forEach(path => imgs_html_for_group_details += render_img({
-    //     img_path: path
-    // }))
-    // $(".group_details_imgs_of_product").html(imgs_html_for_group_details)
+
     console.log(group)
     $("#product_details_num_of_subscibers").html(group.num_of_subscribers)
     $("#short_description_of_group").html(group.group_name)//item_name)

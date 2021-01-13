@@ -79,7 +79,7 @@ def submit_new_group():
     group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
     group_module.add(group)
 
-    return app.send_static_file("index.html")
+    return group.__dict__#app.send_static_file("index.html")
 
 
 @app.route('/new_group', methods=['GET'])

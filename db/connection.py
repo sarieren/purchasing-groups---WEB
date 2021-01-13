@@ -51,4 +51,4 @@ def do_query(query_str):
     return rows
 
 
-# print(do_query("select user_name from user"))
+print(do_query("select * from groups"))
