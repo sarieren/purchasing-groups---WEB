@@ -29,6 +29,16 @@ def get_id_from_name(name):
         return res[0].get("id", 0)
     return None
 
+
+def get_name_from_id(id_):
+
+    query = '''SELECT name FROM category where id = {} '''.format(id_)
+    res = connection.do_query(query)
+
+    if res:
+        return res[0].get("name", 0)
+    return None
+
 def add(category):
     if not exist(category):
         query = '''INSERT INTO category(name) 

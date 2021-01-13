@@ -124,6 +124,28 @@ route_to_home_page = () => {
 }
 //todo
 subscribe_user_to_group = (group_id) => {
+    //get user and main data from cookie
+    user_name = document.cookie.split("username=")[1]
+
+    data_dict  = {
+            "group_id": group_id,
+            "user_name": user_name
+        }
+
+    $.ajax({
+          type: "POST",
+          url: "/submit_new_group", // it's the URL of your component B
+          data: data_dict,
+          success: function(G)
+          {
+            show_alert("success", "You have been to the purchasing group")
+            console.log("post", data)
+          },
+          error: function(data)
+          {
+            show_alert("error", "there was a problem with the subscription, please try again")
+          }
+    });
     console.log("user subscribes to group")
 }
 
@@ -226,8 +248,10 @@ async function route_to_group_details(group_id) {
     //render
     $("#router-outlet").addClass("hidden")
 
+
     $("#product_details_num_of_subscibers").html(group.num_of_subscibers)
     $("#short_description_of_group").html(group.group_name) //item_name)
+    $("#group_id_for_forum").attr("value", group_id)
     $("#brand_of_group_in_details").html(group.category)
     $("#range_sum_for_group_product").html("max sum : " + group.max_price + "$")
     $("#long_decription_of_group").html("description: \n" + group.description_group)
@@ -238,21 +262,61 @@ async function route_to_group_details(group_id) {
 
 
 
-    msgs = [1, 2, 3, 4, 5]
-    $.get("/forums/" + group_id, (res) => {
-        console.log("forum", res)
+    msgs = []
+    $.get("/forums/" + group_id, (res) =>{
+       
+        msgs = JSON.parse(res)
+        
+        user_img_path = "assets\\img\\John-doe.png"
+        //get forum msgs 
+        // forum = $("#forum_of_group")
+        if(typeof(msgs) == Array){
+            msgs.forEach(M => {
+                forum = $("#forum_of_group")
+                gid = M['group_id']
+                uname = M['user_name']
+                msg = M['message_']
+                likes = M['count_like']
+                time = M['end_time']+ ", "+ M['end_time']
+                let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+                forum.append(msg_ele)
+            });
+    }
     })
-    user_img_path = "assets\\img\\John-doe.png"
-    //get forum msgs
-    forum = $("#forum_of_group")
-    msgs.forEach(M => {
-        let msg_ele = $.parseHTML(forum_msg.format("sara", "bye", user_img_path, 5, "2 weeks"))
-        forum.append(msg_ele)
-    })
+
+    $(document).on('submit', '#new_msg', createMsg)
+
 
 }
 
+function createMsg(e){
+    e.preventDefault()
+    group_id = $("#group_id_for_forum").attr("value")
+   
+   
+    $.post("/forums", {groupId: group_id, msg:$("#msg").attr("value") },
+    function(returnedMsgs){
+        returnedMsgs = JSON.parse(returnedMsgs)
+        forum = $("#forum_of_group")
+        gid = returnedMsgs.group_id
+        uname = returnedMsgs.user_name
+        msg = returnedMsgs['message_']
+        likes = returnedMsgs['count_like']
+        time = returnedMsgs['end_date'] + ", "+ returnedMsgs['end_time']
+        let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+        forum.append(msg_ele)
+        msg:$("#msg").attr("value", "") 
 
+    });
+    // $.ajax({ 
+    //     type: "POST",
+    //     url: "/forums", // it's the URL of your component B
+    //     data: $("#frm1").serialize(), // serializes the form's elements
+    //     success: function(res){
+
+    // }
+    // )}
+}
 
 const render_img = _.template(`<img src="<%=img_path%>" alt="">`);
 
