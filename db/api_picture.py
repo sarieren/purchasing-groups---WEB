@@ -7,12 +7,12 @@ def get_picture(item_name):
         piece_url = 'https://pixabay.com/api/?key=19156012-fe856b2884e74c41ff3f38122&q={}&image_type=photo'.format(item_name)
         respone = requests.get(url=piece_url)
         result = respone.json()
-        if(result):
-            result_url = get_url_and_enter_to_db(result, item_name)
-        else:
-            raise Exception("error in link")
+        # if(result):
+        #     result_url = get_url_and_enter_to_db(result, item_name)
+        # else:
+        #     raise Exception("error in link")
 
-        return result_url
+        return result["hits"]
 
     except Exception as e:
         raise Exception(e)
@@ -28,3 +28,6 @@ def get_url_and_enter_to_db(all_links, item_name):
         return all_links["hits"][0]["webformatURL"]
     except Exception as e:
         raise Exception(e)
+
+
+get_picture("table")

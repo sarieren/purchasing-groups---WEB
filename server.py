@@ -5,6 +5,7 @@ import db.category_module as category_module
 import db.group_module as group_module
 import db.purchaser_module as purchaser_module
 import json
+import db.api_picture as api_picture
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 
@@ -114,8 +115,11 @@ def get_group_by_category(category_name):
 
 @app.route("/users")
 def get_all_users():
-    return Response(json.dumps([U.__dict__ for U in user_module.get_all_users()  ]), 200)
+    return Response(json.dumps([U.__dict__ for U in user_module.get_all_users() ]), 200)
 
+@app.route("/api/imgs/categories/<category>")
+def get_random_img_for_category(category):
+    return api_picture.get_picture(category)
 
 @app.route("/users/<user>")
 def get_user_details(user):
