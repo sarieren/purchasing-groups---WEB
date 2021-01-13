@@ -1,8 +1,8 @@
-import db.connection as connection
+import connection as connection
 from datetime import datetime
 
 
-class Forums:
+class FormMsg:
     def __init__(self, group_id, user_name, message_, count_like = 0, end_date = "", end_time = ""):
         self.group_id = int(group_id)
         self.user_name = user_name
@@ -52,9 +52,19 @@ def get_forum(dict_forum):
     end_date = dict_forum.get("end_date")
     end_time = dict_forum.get("end_time")
 
-    f = Forums(group_id, user_name, message_, count_like, end_date, end_time)
+    f = FormMsg(group_id, user_name, message_, count_like, end_date, end_time)
     return f
 
+def add_like(forums):
+
+    query = '''UPDATE forums SET count_like =count_like + 1
+    WHERE group_id={} and user_name = '{}' 
+    and message_ = '{}' and end_date = '{}'
+    and end_time = '{}' '''.format(forums.group_id, forums.user_name, forums.message_, forums.end_date, forums.end_time)
+    connection.do_query_with_change(query)
 
 
+
+f = FormMsg(1, "sara", "hello", 0, '2021-01-13', '13:23:48') 
+add_like(f)
 
