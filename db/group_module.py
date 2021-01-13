@@ -67,6 +67,7 @@ def get_all_groups_of_user_name(name):
 
     return groups
 
+
 def get_group(dict_group):
     id_ = dict_group.get("id")
     group_name = dict_group.get("group_name")
@@ -84,8 +85,6 @@ def get_group(dict_group):
     return g
 
 
-
-
 def get_all_groups_by_categoty_name(name):
 
     groups = []
@@ -98,3 +97,23 @@ def get_all_groups_by_categoty_name(name):
         groups.append(get_group(group))
 
     return groups
+
+
+def get_count_members_to_all_groups():
+    list_id = get_id_groups()
+    group_id_and_count = []
+    for id_ in list_id:
+        query = '''SELECT count(*) FROM purchaser 
+        WHERE group_id = {}'''.format(id_)
+        res = connection.do_query(query)
+        group_id_and_count.append({id_: res[0].get('count(*)')})
+    return group_id_and_count
+
+
+def get_id_groups():
+    id_list = []
+    query = '''SELECT id FROM `groups`'''
+    res = connection.do_query(query)
+    for id_ in res:
+        id_list.append(id_.get("id"))
+    return id_list

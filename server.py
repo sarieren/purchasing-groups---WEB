@@ -96,13 +96,16 @@ def get_add_new_group():
 def get_all_gruops():
     return Response(json.dumps([G.__dict__ for G in group_module.get_all_groups()]), 200)
 
+
 @app.route("/categories")
 def get_all_categories():
     return Response(json.dumps(category_module.get_all_categories()), 200)
-    
+
+
 @app.route("/groups/<user_name>")
 def get_groups_for_user(user_name):
     return Response(json.dumps([G.__dict__ for G in group_module.get_all_groups_of_user_name(user_name)  ]), 200)
+
 
 @app.route("/groups_by_category/<category_name>")
 def get_group_by_category(category_name):
