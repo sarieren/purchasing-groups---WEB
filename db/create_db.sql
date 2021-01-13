@@ -55,19 +55,19 @@ USE group_buy;
 --     );
 
 
-CREATE TABLE forums(
-    group_id int NOT NULL,
-    user_name varchar(50) NOT NULL,
-    message_ varchar(1000) NOT NULL,
-    count_like int NOT NULL,
+-- CREATE TABLE forums(
+--     group_id int NOT NULL,
+--     user_name varchar(50) NOT NULL,
+--     message_ varchar(1000) NOT NULL,
+--     count_like int NOT NULL,
 
-    end_date DATE,
-    end_time TIME,
+--     end_date DATE,
+--     end_time TIME,
 
-    FOREIGN KEY(group_id) REFERENCES groups(id),
-    FOREIGN KEY(user_name) REFERENCES user(user_name)
+--     FOREIGN KEY(group_id) REFERENCES groups(id),
+--     FOREIGN KEY(user_name) REFERENCES user(user_name)
 
-);
+-- );
 
 
 
