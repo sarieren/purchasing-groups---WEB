@@ -184,13 +184,6 @@ const main_content = `
 
 const categories_component = `
 <div class="col-sm-12 col-xs-12 content pt-3 pl-0">
-<div class="row">
-    <div class="row mb-5 pt-3 justify-content-around">
-        <h6 class="mb-4 bc-header left_float">{0}</h6>
-        <button class="btn btn-theme btn-round right_float" id="btn_view_all_categories_in_list" onclick="{2}">{1}</button>
-    </div>
-</div>
-
 <div class="row mt-3">
     <div class="col-sm-12">
         <!--Cards with image-->
