@@ -157,6 +157,7 @@ const main_content = `
  const get_group_row_element_for_all_group_list = _.template(`
 <tr id="group_line_<%= group_id %>" class="group_row_in_table pl-3 pr-3" onclick="route_to_group_details(<%= group_id %>)">
 <td class="align-middle px-4"><%= group_name %></td>
+<input class="id_of_group" value="<%= group_id %>" style="display:hidden"/>
 <td class="align-middle">
     <div class="customers pt-3">
         
@@ -171,10 +172,7 @@ const main_content = `
     </button>
 </td>
 <td class="align-middle">
-    <div class="progress" style="height: 5px;">
-        <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="50"
-            style="width: 85%" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
+    <h4><%= end_date %> </h4>
 </td>
 </tr>`);
 

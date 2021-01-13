@@ -40,7 +40,7 @@ def get_group_forum(group_id):
     if len(forum) > 0:
         return Response(json.dumps(forum), 200) 
     else:
-       return Response(json.dumps({"no_msgs":"No messages in this forum"}), 200)  
+       return Response(json.dumps([]), 200)#{"no_msgs":"No messages in this forum"}), 200)  
 
 
 @app.route('/forums', methods = ['POST'])
@@ -136,11 +136,15 @@ def get_add_new_group():
 
 @app.route("/groups")
 def get_all_gruops():
-    return Response(json.dumps([group_to_dict(G) for G in group_module.get_all_groups()]), 200)
+    print("#########################", "GROUP")
+    # print(group_module.get_all_gruops_without_preproccess())
+    return Response(json.dumps([group_to_dict(G) for G in group_module.get_all_gruops_without_preproccess()]), 200)
 
 
 @app.route("/categories")
 def get_all_categories():
+    print("#########################", "CATEGORY")
+
     return Response(json.dumps(category_module.get_all_categories()), 200)
 
 
@@ -166,11 +170,6 @@ def get_user_details(user):
     return Response(json.dumps(user_module.get_user_by_name(user).__dict__), 200)
 
 
-@app.route("/categories", methods=["POST"])
-def add_category():
-    # add(category object) in category_module
-    pass
-
 
 @app.route("/purchasers", methods=["POST"])
 def add_purchaser_to_group():
@@ -186,21 +185,23 @@ def add_purchaser_to_group():
     return purchaser.__dict__, 201
 
 
+@app.route("/purchasers/<user>", methods=["GET"])
+def get_group_id_by_user_name(user):
+    return Response(json.dumps(purchaser_module.get_id_group_by_name(user)))
 
-
-def group_to_dict(group_tuple):
-    G = group_tuple[0]
-    num_of_subsribers = group_tuple[1]
+def group_to_dict(G):
+    # G = group_tuple[0]
+    # num_of_subsribers = group_tuple[1]
     obj =  {
-        "group_id": G.id_,
-        "group_name": G.group_name,
-        "num_of_subscibers": num_of_subsribers,
-        "item_name": G.item_name,
-        "max_price": G.max_price,
-        "manager": G.manager,
-        "category": category_module.get_name_from_id(G.category_id), 
-        "end_date": G.end_date,
-        "description_group": G.description_group
+        "group_id": G["id"],
+        "group_name": G["group_name"],
+        "num_of_subscibers": G["count"],
+        "item_name": G["item_name"],
+        "max_price": G["max_price"],
+        "manager": G["manager"],
+        "category": G["category_id"], 
+        "end_date": str(G["end_date"]),
+        "description_group":G["description_group"]
     }
     return obj
 

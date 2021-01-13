@@ -18,6 +18,7 @@ def add(purchaser):
 
 
 def exist(purchaser):
+    print(purchaser.__dict__)
     query = '''SELECT count(*) FROM purchaser 
     WHERE user_name = '{}' and group_id = {} '''.format(purchaser.user_name, purchaser.group_id)
     res = connection.do_query(query)

@@ -1,4 +1,4 @@
-import connection as connection
+import db.connection as connection
 from datetime import datetime
 
 
@@ -65,6 +65,5 @@ def add_like(forums):
 
 
 
-f = FormMsg(1, "sara", "hello", 0, '2021-01-13', '13:23:48') 
-add_like(f)
+
 

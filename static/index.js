@@ -22,13 +22,15 @@ list_all_categories = []
 cat_ob = {}
 all_groups_elements = []
 all_categories_element = []
+user_groups_id = []
+user_name = ""
+num_of_app_visitors = 999
+num_of_visitors_likes = 567
+number_of_groups_created = 100
 
+get_user_data = () => {
 
-async function init_page() {
-
-    //get user and main data from server
-    user_name = document.cookie.split("username=")[1]
-    $.get("/users/" + user_name, (res) => {
+    return $.get("/users/" + user_name, (res) => {
         res = JSON.parse(res)
         // user_mail = res.user_mail
         user_img_path = "assets\\img\\client-img4.png"
@@ -37,74 +39,118 @@ async function init_page() {
         $("#user_mail").text(res["user_mail"])
         // $(".user_img_path").attr("src", user_img_path)
         $(".user_img_letter").text(user_img_letter)
+
     })
 
-    num_of_app_visitors = 999
-    num_of_visitors_likes = 567
-    number_of_groups_created = 100
+}
 
 
-
-    $("#group_details").addClass("hidden")
-    $("#router-outlet").removeClass("hidden")
-
-    content = $.parseHTML(categories_component + main_content)
-    $("#router-outlet").append(content)
-    $("#num_of_app_visitors").text(num_of_app_visitors)
-    $("#num_of_visitors_likes").text(num_of_visitors_likes)
-    $("#number_of_groups_created").text(number_of_groups_created)
-
-    data = await $.get("/categories") //, function (data, status) {
-    console.log(data)
-    console.log("cat", typeof (data))
-    list_all_categories = JSON.parse(data)
-    for (let cat of list_all_categories) {
-        console.log(cat)
-        cat_ob[cat.id] = cat.name
-        let urls = await render_random_img_by_category(cat.name, 0)
-        console.log(urls)
-        cat_ob[cat.name + "_urls"] = urls
-        console.log(cat_ob[cat.name + "_urls"][Math.floor(Math.random() * cat_ob[cat.name + "_urls"].length)])
-    }
+get_categories_data = () => {
+    return $.get("/categories", (data, status) => {
+        console.log(data)
+        console.log("cat", typeof (data))
+        list_all_categories = JSON.parse(data)
+        list_all_categories.forEach(cat => {
+            console.log(cat)
+            cat_ob[cat.id] = cat.name
+            render_random_img_by_category(cat.name, cat.id)
 
 
+            // cat_ob[cat.id + "_urls"] = urls        
+            // console.log(cat_ob)
 
-    // ).done(function () {
-    temp_cat_str = ""
-    for (let cat of list_all_categories) {
-        temp_cat_str += category_card.format(cat.name, cat.name, cat.id, cat_ob[cat.name + "_urls"][0])
-    }
-    all_categories_element = $.parseHTML(temp_cat_str)
-    filter_and_add_list_elements_to_father_element(".container_for_categories", all_categories_element, () => true)
+            // console.log(cat_ob[cat.id + "_urls"][Math.floor(Math.random() * cat_ob[cat.id + "_urls"].length)])
+        })
+    })
 
-    temp_group_str = ""
-    console.log("before groups")
-    data = await $.get("/groups")
-    console.log(typeof (data), data)
-
-    list_all_groups = JSON.parse(data)
-    list_all_groups.sort(compare_by_date);
-    for (let G of list_all_groups) {
-        temp_group_str += get_group_row_element_for_all_group_list(G)
-    }
-    all_groups_elements = $.parseHTML(temp_group_str)
-
-
-
-
-    //event listeners
-    $("#btn_view_all_groups_in_list").click(() => route_to_view_all_groups())
-    $("#btn_subscribe").click((e) => subscribe_user_to_group(e.currentTarget.id))
-    $("#link_to_user_profile").click(() => console.log("clicked on profile"))
-    $("#link_show_groups_by_category").click(() => route_to_all_categories)
-    $("#link_show_all_groups").click(route_to_view_all_groups)
-    $("#link_to_your_groups").click(route_to_view_your_groups)
-    $("#link_to_create_new_group").click(route_to_create_new_group)
-
-    $("#logo").click(route_to_home_page)
-    // $("#loader").css('display', 'none')
 
 }
+
+
+get_groups_data = () => {
+    return $.get("/groups", (data) => {
+        console.log(typeof (data), data)
+
+        list_all_groups = JSON.parse(data)
+        list_all_groups.sort(compare_by_date);
+    })
+
+
+}
+
+
+get_users_group_id = (username) => {
+    return $.get("/purchasers/" + username, (res) => {
+        user_groups_id = JSON.parse(res)
+    })
+
+
+}
+
+init_page = () => {
+
+    //get user and main data from server
+    user_name = document.cookie.split("username=")[1]
+    $(".loader-wrapper").css("display", "block")
+
+    $.when(
+        get_groups_data(),
+        get_user_data(),
+        get_categories_data(),
+        get_users_group_id(user_name)
+        ).then(() => {
+
+        $("#group_details").addClass("hidden")
+        $("#router-outlet").removeClass("hidden")
+
+        content = $.parseHTML(categories_component + main_content)
+        $("#router-outlet").append(content)
+        $("#num_of_app_visitors").text(num_of_app_visitors)
+        $("#num_of_visitors_likes").text(num_of_visitors_likes)
+        $("#number_of_groups_created").text(number_of_groups_created)
+
+        temp_cat_str = ""
+        for (let cat of list_all_categories) {
+            temp_cat_str += category_card.format(cat.name, cat.name, cat.id, cat_ob[cat.id + "_urls"][Math.floor(Math.random() * cat_ob[cat.id + "_urls"].length)])
+        }
+        all_categories_element = $.parseHTML(temp_cat_str)
+        filter_and_add_list_elements_to_father_element(".container_for_categories", all_categories_element, () => true)
+
+        temp_group_str = ""
+        for (let G of list_all_groups) {
+            temp_group_str += get_group_row_element_for_all_group_list(G)
+        }
+        all_groups_elements = $.parseHTML(temp_group_str)
+
+
+
+
+        //event listeners
+        $("#btn_view_all_groups_in_list").click(() => route_to_view_all_groups())
+        $("#btn_subscribe").click((e) => subscribe_user_to_group(e.currentTarget.class))
+        $("#link_to_user_profile").click(() => console.log("clicked on profile"))
+        $("#link_show_groups_by_category").click(() => route_to_all_categories)
+        $("#link_show_all_groups").click(route_to_view_all_groups)
+        $("#link_to_your_groups").click(route_to_view_your_groups)
+        $("#link_to_create_new_group").click(route_to_create_new_group)
+
+        $("#logo").click(route_to_home_page)
+        $(".loader-wrapper").css("display", "none")
+
+        // $("#loader").css('display', 'none')
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -122,29 +168,29 @@ route_to_home_page = () => {
     filter_and_add_list_elements_to_father_element(".container_for_categories", all_categories_element, () => true)
 
 }
-//todo
+
 subscribe_user_to_group = (group_id) => {
+    console.log("sub", group_id)
     //get user and main data from cookie
     user_name = document.cookie.split("username=")[1]
 
-    data_dict  = {
-            "group_id": group_id,
-            "user_name": user_name
-        }
+    data_dict = {
+        "group_id": group_id,
+        "user_name": user_name
+    }
 
     $.ajax({
-          type: "POST",
-          url: "/submit_new_group", // it's the URL of your component B
-          data: data_dict,
-          success: function(G)
-          {
+        type: "POST",
+        url: "/purchasers", // it's the URL of your component B
+        data: data_dict,
+        success: function (G) {
             show_alert("success", "You have been to the purchasing group")
             console.log("post", data)
-          },
-          error: function(data)
-          {
+            user_groups_id.append(group_id)
+        },
+        error: function (data) {
             show_alert("error", "there was a problem with the subscription, please try again")
-          }
+        }
     });
     console.log("user subscribes to group")
 }
@@ -178,12 +224,24 @@ route_to_view_all_groups = () => {
     //render
     $("#router-outlet").html(table_of_groups.format("All Groups", "Add New Group", "all", "route_to_create_new_group()"))
     filter_and_add_list_elements_to_father_element("#rows_of_recent_groups_table_all", all_groups_elements, () => true)
-
 }
 
 route_to_view_your_groups = () => {
+    console.log("view all was clicked")
+    $("#group_details").addClass("hidden")
+    $("#router-outlet").removeClass("hidden")
+    $("#router-outlet").empty()
 
+    //render
+    $("#router-outlet").html(table_of_groups.format("My Groups", "Add New Group", "my", "route_to_create_new_group()"))
+    filter_and_add_list_elements_to_father_element("#rows_of_recent_groups_table_all", all_groups_elements, filtered_users_group)
 }
+
+filtered_users_group = (item) => {
+    group_id = item.find(".id_of_group").val()
+    console.log(group_id)
+}
+
 
 route_to_groups_for_category = (cat_id) => {
     $("#group_details").addClass("hidden")
@@ -238,11 +296,12 @@ async function route_to_group_details(group_id) {
     urls = cat_ob[group.category + "_urls"]
     imgs_collection1 = $("#group_details_imgs_of_product_1")
     imgs_collection2 = $("#group_details_imgs_of_product_1")
-    for(let i = 1; i < 7; i ++){
+    for (let i = 1; i < 7; i++) {
         url = urls[Math.floor(Math.random() * urls.length)]
-       console.log("img[src='assets\\img\\slick" + i + ".jpg']")
-        $("img[src='assets\\img\\slick" + i + ".jpg']").attr("src", url)
-        // $("#img2_" + i).attr("src", url)
+        console.log("img[src='assets\\img\\slick" + i + ".jpg']")
+        // $("img[src='assets\\img\\slick" + i + ".jpg']").attr("src", url)
+        $("#img1_" + i).attr("src", url)
+        $("#img2_" + i).attr("src", url)
     }
 
     //render
@@ -252,7 +311,7 @@ async function route_to_group_details(group_id) {
     $("#product_details_num_of_subscibers").html(group.num_of_subscibers)
     $("#short_description_of_group").html(group.group_name) //item_name)
     $("#group_id_for_forum").attr("value", group_id)
-    $("#brand_of_group_in_details").html(group.category)
+    $("#brand_of_group_in_details").html(cat_ob[group.category])
     $("#range_sum_for_group_product").html("max sum : " + group.max_price + "$")
     $("#long_decription_of_group").html("description: \n" + group.description_group)
     $("#group_duedate").html(group.end_date)
@@ -263,25 +322,25 @@ async function route_to_group_details(group_id) {
 
 
     msgs = []
-    $.get("/forums/" + group_id, (res) =>{
-       
+    $.get("/forums/" + group_id, (res) => {
+
         msgs = JSON.parse(res)
-        
+
         user_img_path = "assets\\img\\John-doe.png"
         //get forum msgs 
         // forum = $("#forum_of_group")
-        if(typeof(msgs) == Array){
+        if (typeof (msgs) == Array) {
             msgs.forEach(M => {
                 forum = $("#forum_of_group")
                 gid = M['group_id']
                 uname = M['user_name']
                 msg = M['message_']
                 likes = M['count_like']
-                time = M['end_time']+ ", "+ M['end_time']
+                time = M['end_time'] + ", " + M['end_time']
                 let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
                 forum.append(msg_ele)
             });
-    }
+        }
     })
 
     $(document).on('submit', '#new_msg', createMsg)
@@ -289,33 +348,29 @@ async function route_to_group_details(group_id) {
 
 }
 
-function createMsg(e){
+function createMsg(e) {
     e.preventDefault()
     group_id = $("#group_id_for_forum").attr("value")
-   
-   
-    $.post("/forums", {groupId: group_id, msg:$("#msg").attr("value") },
-    function(returnedMsgs){
-        returnedMsgs = JSON.parse(returnedMsgs)
-        forum = $("#forum_of_group")
-        gid = returnedMsgs.group_id
-        uname = returnedMsgs.user_name
-        msg = returnedMsgs['message_']
-        likes = returnedMsgs['count_like']
-        time = returnedMsgs['end_date'] + ", "+ returnedMsgs['end_time']
-        let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
-        forum.append(msg_ele)
-        msg:$("#msg").attr("value", "") 
 
-    });
-    // $.ajax({ 
-    //     type: "POST",
-    //     url: "/forums", // it's the URL of your component B
-    //     data: $("#frm1").serialize(), // serializes the form's elements
-    //     success: function(res){
 
-    // }
-    // )}
+    $.post("/forums", {
+            groupId: group_id,
+            msg: $("#msg").attr("value")
+        },
+        function (returnedMsgs) {
+            returnedMsgs = JSON.parse(returnedMsgs)
+            forum = $("#forum_of_group")
+            gid = returnedMsgs.group_id
+            uname = returnedMsgs.user_name
+            msg = returnedMsgs['message_']
+            likes = returnedMsgs['count_like']
+            time = returnedMsgs['end_date'] + ", " + returnedMsgs['end_time']
+            let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+            forum.append(msg_ele)
+            msg: $("#msg").attr("value", "")
+
+        });
+
 }
 
 const render_img = _.template(`<img src="<%=img_path%>" alt="">`);
@@ -333,12 +388,15 @@ get_category_name_by_id = (category_id) => {
 }
 
 
-async function render_random_img_by_category(category_str, num) {
+function render_random_img_by_category(category_str, cat_id) {
     url = `https://pixabay.com/api/?key=19156012-fe856b2884e74c41ff3f38122&q=${category_str}&image_type=photo`
-    res = await $.get(url) //, (res) =>{
+    res = $.ajax({
+        async: false,
+        url: url
+    }).done((res) => {
 
-    return res["hits"].map(U => U["webformatURL"])
-
+        cat_ob[cat_id + "_urls"] = res["hits"].map(U => U["webformatURL"])
+    })
 }
 
 
@@ -376,6 +434,7 @@ format_date = (date) => {
 }
 
 filter_and_add_list_elements_to_father_element = (father_ele_name, child_list_ele, filter_func) => {
+    console.log(father_ele_name, child_list_ele, filter_func)
     filterd_list = child_list_ele.filter(filter_func)
     $(father_ele_name).append(filterd_list)
 }

@@ -118,3 +118,11 @@ def get_id_groups():
     for id_ in res:
         id_list.append(id_.get("id"))
     return id_list
+
+
+def get_all_gruops_without_preproccess():
+    query = '''SELECT * FROM `groups`  NATURAL JOIN count_members_group WHERE groups.id = count_members_group.group_id'''
+    res = connection.do_query(query)
+    return list(res)
+
+
