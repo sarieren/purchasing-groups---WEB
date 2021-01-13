@@ -1,7 +1,6 @@
-import db.connection #as connection
-import db.purchaser_module #as purchaser_module
-import db.category_module #as category_module
-
+import db.connection as connection
+import db.purchaser_module as purchaser_module
+import db.category_module as category_module
 
 
 class Group:

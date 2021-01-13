@@ -96,7 +96,7 @@ init_page = () => {
 
         elem_all_groups = ""
         list_all_groups.forEach(G => {
-            onsole.log(G)
+            console.log(G)
             elem_all_groups += get_group_row_element_for_all_group_list(G)
         });
         elem_all_groups = $.parseHTML(elem_all_groups)
@@ -160,6 +160,28 @@ route_to_home_page = () => {
 }
 
 subscribe_user_to_group = (group_id) => {
+    //get user and main data from cookie
+    user_name = document.cookie.split("username=")[1]
+
+    data_dict  = {
+            "group_id": group_id,
+            "user_name": user_name
+        }
+
+    $.ajax({
+          type: "POST",
+          url: "/submit_new_group", // it's the URL of your component B
+          data: data_dict
+          success: function(G)
+          {
+            show_alert("success", "You have been to the purchasing group")
+            console.log("post", data)
+          },
+          error: function(data)
+          {
+            show_alert("error", "there was a problem with the subscription, please try again")
+          }
+    });
     console.log("user subscribes to group")
 }
 

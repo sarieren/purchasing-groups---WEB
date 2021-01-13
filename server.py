@@ -149,8 +149,16 @@ def add_category():
 
 @app.route("/purchasers", methods=["POST"])
 def add_purchaser_to_group():
-    #add(purchaser) in purchaser module
-    pass
+    data = request.form
+    user_name = data["user_name"]
+    group_id = data["group_id"]
+
+    purchaser = purchaser_module.Purchaser(user_name, group_id)
+    is_added = purchaser_module.add(purchaser)
+
+    if not is_added:
+        return {}, 500
+    return purchaser.__dict__, 201
 
 
 # #OPTIONAL
