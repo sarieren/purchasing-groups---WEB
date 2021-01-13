@@ -275,7 +275,7 @@
                                 <div class="nav nav-tabs nav-fill" id="nav-customContent" role="tablist">
                                     <a class="nav-item nav-link active" id="nav-home" data-toggle="tab"
                                         href="#custom-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                                        Reviews</a>
+                                        Group Forum</a>
                                 </div>
                             </nav>
 
@@ -284,7 +284,25 @@
                             <!-- here will be all msgs -->
                         
                             </div>
+                            <input id="group_id_for_forum" type="text" style="display:none">
                             <!-- add msg form -->
+                            <!-- action="/save_msg" method="POST" -->
+                            <form  class="mt-2" id="new_msg">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-send"></i></span>
+                                    </div>
+                                    <!-- <textarea name="msg" class="form-control mt-0" placeholder="Your message" aria-label="message" aria-describedby="basic-addon1">
+
+                                    </textarea> -->
+                                    <input type="text" id="msg" name="msg" size="50" class="form-control mt-0" placeholder="Your message" aria-label="message" aria-describedby="basic-addon1" >
+                                </div>
+        
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-theme btn-block p-2 mb-1" value="send message">
+        
+                                </div>
+                            </form>
                         </div>
                     </div>
 

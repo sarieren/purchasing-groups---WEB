@@ -49,8 +49,8 @@ def get_forum(dict_forum):
     user_name = dict_forum.get("user_name")
     message_ = dict_forum.get("message_")
     count_like = dict_forum.get("count_like")
-    end_date = dict_forum.get("end_date")
-    end_time = dict_forum.get("end_time")
+    end_date = str(dict_forum.get("end_date"))
+    end_time = str(dict_forum.get("end_time"))
 
     f = ForumMsg(group_id, user_name, message_, count_like, end_date, end_time)
     return f

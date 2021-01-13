@@ -273,7 +273,7 @@ async function route_to_group_details(group_id) {
 
     //render
     $("#router-outlet").addClass("hidden")
-
+    $("#group_id_for_forum").attr("value", group_id)
     console.log(group)
     $("#product_details_num_of_subscibers").html(group.num_of_subscribers)
     $("#short_description_of_group").html(group.group_name)//item_name)
@@ -289,21 +289,61 @@ async function route_to_group_details(group_id) {
     }
 
 
-    msgs = [1, 2, 3, 4, 5]
+    msgs = []
     $.get("/forums/" + group_id, (res) =>{
-        console.log("forum", res)
+       
+        msgs = JSON.parse(res)
+        
+        user_img_path = "assets\\img\\John-doe.png"
+        //get forum msgs 
+        // forum = $("#forum_of_group")
+        if(typeof(msgs) == Array){
+            msgs.forEach(M => {
+                forum = $("#forum_of_group")
+                gid = M['group_id']
+                uname = M['user_name']
+                msg = M['message_']
+                likes = M['count_like']
+                time = M['end_time']+ ", "+ M['end_time']
+                let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+                forum.append(msg_ele)
+            });
+    }
     })
-    user_img_path = "assets\\img\\John-doe.png"
-    //get forum msgs
-    forum = $("#forum_of_group")
-    msgs.forEach(M => {
-        let msg_ele = $.parseHTML(forum_msg.format("sara", "bye", user_img_path, 5, "2 weeks"))
-        forum.append(msg_ele)
-    })
+
+    $(document).on('submit', '#new_msg', createMsg)
+
 
 }
 
+function createMsg(e){
+    e.preventDefault()
+    group_id = $("#group_id_for_forum").attr("value")
+   
+   
+    $.post("/forums", {groupId: group_id, msg:$("#msg").attr("value") },
+    function(returnedMsgs){
+        returnedMsgs = JSON.parse(returnedMsgs)
+        forum = $("#forum_of_group")
+        gid = returnedMsgs.group_id
+        uname = returnedMsgs.user_name
+        msg = returnedMsgs['message_']
+        likes = returnedMsgs['count_like']
+        time = returnedMsgs['end_date'] + ", "+ returnedMsgs['end_time']
+        let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+        forum.append(msg_ele)
+        msg:$("#msg").attr("value", "") 
 
+    });
+    // $.ajax({ 
+    //     type: "POST",
+    //     url: "/forums", // it's the URL of your component B
+    //     data: $("#frm1").serialize(), // serializes the form's elements
+    //     success: function(res){
+
+    // }
+    // )}
+}
 
 const render_img = _.template(`<img src="<%=img_path%>" alt="">`);
 

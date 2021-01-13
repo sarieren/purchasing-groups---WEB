@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, Response
 from db.user_module import User
-from forums_module import ForumMsg
+from db.forums_module import ForumMsg
 import db.user_module as user_module
 import db.category_module as category_module
 import db.group_module as group_module
@@ -8,6 +8,7 @@ import db.purchaser_module as purchaser_module
 import db.forums_module as forums_module
 import json
 import db.api_picture as api_picture
+from datetime import datetime
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 
@@ -33,18 +34,25 @@ def authenticate_url():
 @app.route('/forums/<group_id>', methods = ['GET'])
 def get_group_forum(group_id):
     forum = forums_module.get_all_message_by_group_id_order(group_id)
-    return Response(json.dumps(forum), 200) 
+    forum = [msg.__dict__ for msg in forum]
+    print('forum', forum)
+    if len(forum) > 0:
+        return Response(json.dumps(forum), 200) 
+    else:
+       return Response(json.dumps({"no_msgs":"No messages in this forum"}), 200)  
 
 
-@app.route('/forums/', methods = ['POST'])
+@app.route('/forums', methods = ['POST'])
 def add_msg():
     user_name = request.cookies.get('username')
     data = request.form
-    group_id = data['group_id']
+    group_id = data['groupId']
     msg = data['msg']
-    new_msg = ForumMsg(group_id, user_name, msg)
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    n = now.split(" ")
+    new_msg = ForumMsg(group_id, user_name, msg, 0, n[0], n[1])
     forums_module.add(new_msg)
-
+    return Response(json.dumps(new_msg.__dict__ ), 200) 
 
 
 @app.route('/submit_login', methods = ['POST'])
