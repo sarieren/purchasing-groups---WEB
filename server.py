@@ -58,15 +58,15 @@ def register_new_purchaser():
         resp.set_cookie('username', user_name)
         return resp
     else:
-        #pop error message
+        # pop error message
         return app.send_static_file('login.html')
 
 
-@app.route('/submit_new_group', methods=['POST']) #have to change route to "groups"
+@app.route('/submit_new_group', methods=['POST'])  # have to change route to "groups"
 def submit_new_group():
     user_name = request.cookies.get('username')
     data = request.form
-
+    print(user_name)
     group_name = data['group_name']
     item_name = data['item_name']
     max_price = data['max_price']
@@ -74,12 +74,13 @@ def submit_new_group():
     end_time_day = data['end_time_day']
     end_time_time = data['end_time_time']
     group_description = data['group_description']
-
     category_id = category_module.get_id_from_name(category)
     group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
-    group_module.add(group)
+    is_added = group_module.add(group)
 
-    return group.__dict__#app.send_static_file("index.html")
+    if not is_added:
+        return {}, 500
+    return group.__dict__, 201  # app.send_static_file("index.html")
 
 
 @app.route('/new_group', methods=['GET'])
