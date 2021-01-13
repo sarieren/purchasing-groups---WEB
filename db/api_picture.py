@@ -28,3 +28,6 @@ def get_url_and_enter_to_db(all_links, item_name):
         return all_links["hits"][0]["webformatURL"]
     except Exception as e:
         raise Exception(e)
+
+
+# get_picture("table")

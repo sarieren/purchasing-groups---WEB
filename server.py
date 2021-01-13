@@ -5,6 +5,7 @@ import db.category_module as category_module
 import db.group_module as group_module
 import db.purchaser_module as purchaser_module
 import json
+import db.api_picture as api_picture
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 
@@ -23,7 +24,7 @@ def login():
 def authenticate_url():
     is_logged_in = request.cookies.get('logged_in')
     if is_logged_in == 'True':
-        return app.send_static_file('index.html')
+        return redirect(url_for('launch_homepage'))
     else:
         return redirect(url_for('login'))
 
@@ -36,7 +37,7 @@ def authenticate():
     password = data['password']   
     is_authorized = user_module.authenticate(user_name, password)
     if is_authorized:
-        resp = make_response(app.send_static_file('index.html'))
+        resp = make_response(redirect(url_for('launch_homepage')))
         resp.set_cookie('logged_in', 'True')
         resp.set_cookie('username', user_name)
         return resp
@@ -44,7 +45,12 @@ def authenticate():
         return redirect(url_for('root'))
 
 
-@app.route('/register', methods = ['POST'])
+@app.route('/register', methods=['GET'])
+def launch_register_form():
+    return app.send_static_file('register.html')
+
+
+@app.route('/register', methods=['POST'])
 def register_new_purchaser():
     data = request.form
     user_name = data['user_name']
@@ -53,20 +59,26 @@ def register_new_purchaser():
     new_purchaser = User(user_name, email, password)
     registeration_status = user_module.sign_up(new_purchaser)
     if registeration_status:
-        resp = make_response(app.send_static_file('index.html'))
+        resp = make_response(redirect(url_for('launch_homepage')))
+        #app.send_static_file('index.html'))
         resp.set_cookie('logged_in', 'True')
         resp.set_cookie('username', user_name)
         return resp
     else:
-        # pop error message
-        return app.send_static_file('login.html')
+        #pop error message
+        return redirect(url_for('login'))
+
+
+@app.route('/groupBy', methods=['GET'])
+def launch_homepage():
+   return app.send_static_file("index.html")
 
 
 @app.route('/submit_new_group', methods=['POST'])  # have to change route to "groups"
 def submit_new_group():
     user_name = request.cookies.get('username')
     data = request.form
-    print(user_name)
+
     group_name = data['group_name']
     item_name = data['item_name']
     max_price = data['max_price']
@@ -74,6 +86,7 @@ def submit_new_group():
     end_time_day = data['end_time_day']
     end_time_time = data['end_time_time']
     group_description = data['group_description']
+
     category_id = category_module.get_id_from_name(category)
     group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
     is_added = group_module.add(group)
@@ -115,7 +128,12 @@ def get_group_by_category(category_name):
 
 @app.route("/users")
 def get_all_users():
-    return Response(json.dumps([U.__dict__ for U in user_module.get_all_users()  ]), 200)
+    return Response(json.dumps([U.__dict__ for U in user_module.get_all_users() ]), 200)
+
+
+@app.route("/api/imgs/categories/<category>")
+def get_random_img_for_category(category):
+    return api_picture.get_picture(category)
 
 
 @app.route("/users/<user>")
@@ -127,6 +145,8 @@ def get_user_details(user):
 def add_category():
     #add(category object) in category_module
     pass
+
+
 @app.route("/purchasers", methods=["POST"])
 def add_purchaser_to_group():
     #add(purchaser) in purchaser module
