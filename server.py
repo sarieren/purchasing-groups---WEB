@@ -73,9 +73,10 @@ def submit_new_group():
     category = data['category']
     end_time_day = data['end_time_day']
     end_time_time = data['end_time_time']
+    group_description = data['group_description']
 
     category_id = category_module.get_id_from_name(category)
-    group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time)
+    group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
     group_module.add(group)
 
     return app.send_static_file("index.html")
