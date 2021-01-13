@@ -23,7 +23,7 @@ def login():
 def authenticate_url():
     is_logged_in = request.cookies.get('logged_in')
     if is_logged_in == 'True':
-        return app.send_static_file('index.html')
+        return redirect(url_for('launch_homepage'))
     else:
         return redirect(url_for('login'))
 
@@ -36,13 +36,16 @@ def authenticate():
     password = data['password']   
     is_authorized = user_module.authenticate(user_name, password)
     if is_authorized:
-        resp = make_response(app.send_static_file('index.html'))
+        resp = make_response(redirect(url_for('launch_homepage')))
         resp.set_cookie('logged_in', 'True')
         resp.set_cookie('username', user_name)
         return resp
     else:
         return redirect(url_for('root'))
 
+@app.route('/register', methods = ['GET'])
+def launch_register_form():
+    return app.send_static_file('register.html')
 
 @app.route('/register', methods = ['POST'])
 def register_new_purchaser():
@@ -53,14 +56,18 @@ def register_new_purchaser():
     new_purchaser = User(user_name, email, password)
     registeration_status = user_module.sign_up(new_purchaser)
     if registeration_status:
-        resp = make_response(app.send_static_file('index.html'))
+        resp = make_response(redirect(url_for('launch_homepage')))
+        #app.send_static_file('index.html'))
         resp.set_cookie('logged_in', 'True')
         resp.set_cookie('username', user_name)
         return resp
     else:
         #pop error message
-        return app.send_static_file('login.html')
+        return redirect(url_for('login'))
 
+@app.route('/groupBy', methods=['GET'])
+def launch_homepage():
+   return app.send_static_file("index.html")
 
 @app.route('/submit_new_group', methods=['POST']) #have to change route to "groups"
 def submit_new_group():
@@ -79,7 +86,7 @@ def submit_new_group():
     group = group_module.Group(user_name, group_name, item_name, max_price, category_id, end_time_day, end_time_time, group_description)
     group_module.add(group)
 
-    return app.send_static_file("index.html")
+    return redirect(url_for('launch_homepage'))
 
 
 @app.route('/new_group', methods=['GET'])
