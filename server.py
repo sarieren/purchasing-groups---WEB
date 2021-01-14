@@ -32,6 +32,7 @@ def authenticate_url():
     else:
         return redirect(url_for('login'))
 
+
 @app.route('/forums/<group_id>', methods = ['GET'])
 def get_group_forum(group_id):
     forum = forums_module.get_all_message_by_group_id_order(group_id)
@@ -40,7 +41,7 @@ def get_group_forum(group_id):
     if len(forum) > 0:
         return Response(json.dumps(forum), 200) 
     else:
-       return Response(json.dumps([]), 200)#{"no_msgs":"No messages in this forum"}), 200)  
+        return Response(json.dumps([]), 200)  # {"no_msgs":"No messages in this forum"}), 200)
 
 
 @app.route('/forums', methods = ['POST'])
@@ -53,7 +54,7 @@ def add_msg():
     n = now.split(" ")
     new_msg = ForumMsg(group_id, user_name, msg, 0, n[0], n[1])
     forums_module.add(new_msg)
-    return Response(json.dumps(new_msg.__dict__ ), 200) 
+    return Response(json.dumps(new_msg.__dict__), 200)
 
 
 @app.route('/submit_login', methods=['POST'])
@@ -136,15 +137,11 @@ def get_add_new_group():
 
 @app.route("/groups")
 def get_all_gruops():
-    print("#########################", "GROUP")
-    # print(group_module.get_all_gruops_without_preproccess())
     return Response(json.dumps([group_to_dict(G) for G in group_module.get_all_gruops_without_preproccess()]), 200)
 
 
 @app.route("/categories")
 def get_all_categories():
-    print("#########################", "CATEGORY")
-
     return Response(json.dumps(category_module.get_all_categories()), 200)
 
 
@@ -163,12 +160,9 @@ def get_all_users():
     return Response(json.dumps([U.__dict__ for U in user_module.get_all_users()]), 200)
 
 
-
-
 @app.route("/users/<user>")
 def get_user_details(user):
     return Response(json.dumps(user_module.get_user_by_name(user).__dict__), 200)
-
 
 
 @app.route("/purchasers", methods=["POST"])
@@ -200,7 +194,7 @@ def add_likes_to_msg():
 def group_to_dict(G):
     # G = group_tuple[0]
     # num_of_subsribers = group_tuple[1]
-    obj =  {
+    obj = {
         "group_id": G["id"],
         "group_name": G["group_name"],
         "num_of_subscibers": G["count"],
@@ -215,7 +209,6 @@ def group_to_dict(G):
 
 
 app.run(port=3000, debug=1)
-# get_all_gruops()
 
 
 

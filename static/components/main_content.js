@@ -243,7 +243,7 @@ const new_group_form = _.template(`
                     {%endfor%}-->
 
                     <% _.each( categories, function( category ){ %>
-                        <option class="px-2" value=<%=category.name %>> <%=category.name %></option>    
+                        <option class="px-2" value=<%=category.name %>> <%=category.name %></option>
                     <% }); %>
                 </select><br>
                 
