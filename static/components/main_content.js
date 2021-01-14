@@ -155,7 +155,7 @@ const main_content = `
 
 
  const get_group_row_element_for_all_group_list = _.template(`
-<tr id="group_line_<%= group_id %>" class="group_row_in_table pl-3 pr-3" onclick="route_to_group_details(<%= group_id %>)">
+<tr id="group_line_<%= group_id %>_<%= category %>" class="group_row_in_table pl-3 pr-3" onclick="route_to_group_details(<%= group_id %>)">
 <td class="align-middle px-4"><%= group_name %></td>
 <input class="id_of_group" value="<%= group_id %>" style="display:hidden"/>
 <td class="align-middle">
@@ -168,7 +168,7 @@ const main_content = `
 </td>
 <td class="align-middle">
     <button class="btn-outline-theme btn-round">
-    <%= category %>
+    <%= category_str %>
     </button>
 </td>
 <td class="align-middle">
