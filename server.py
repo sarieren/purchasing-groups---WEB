@@ -212,7 +212,7 @@ def group_to_dict(G):
     return obj
 
 
-app.run(port=5000, debug=1)
+app.run(port=5000)
 
 
 
