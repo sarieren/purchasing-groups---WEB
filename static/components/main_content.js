@@ -155,8 +155,9 @@ const main_content = `
 
 
  const get_group_row_element_for_all_group_list = _.template(`
-<tr id="group_line_<%= group_id %>" class="group_row_in_table pl-3 pr-3" onclick="route_to_group_details(<%= group_id %>)">
+<tr id="group_line_<%= group_id %>_<%= category %>" class="group_row_in_table pl-3 pr-3" onclick="route_to_group_details(<%= group_id %>)">
 <td class="align-middle px-4"><%= group_name %></td>
+<input class="id_of_group" value="<%= group_id %>" style="display:hidden"/>
 <td class="align-middle">
     <div class="customers pt-3">
         
@@ -167,14 +168,11 @@ const main_content = `
 </td>
 <td class="align-middle">
     <button class="btn-outline-theme btn-round">
-    <%= category %>
+    <%= category_str %>
     </button>
 </td>
 <td class="align-middle">
-    <div class="progress" style="height: 5px;">
-        <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="50"
-            style="width: 85%" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
+    <h4><%= end_date %> </h4>
 </td>
 </tr>`);
 
@@ -184,18 +182,11 @@ const main_content = `
 
 const categories_component = `
 <div class="col-sm-12 col-xs-12 content pt-3 pl-0">
-<div class="row">
-    <div class="row mb-5 pt-3 justify-content-around">
-        <h6 class="mb-4 bc-header left_float">{0}</h6>
-        <button class="btn btn-theme btn-round right_float" id="btn_view_all_categories_in_list" onclick="{2}">{1}</button>
-    </div>
-</div>
-
 <div class="row mt-3">
     <div class="col-sm-12">
         <!--Cards with image-->
         <div class="mt-1 mb-3 button-container">
-            <div class="row container_for_categories">
+            <div class="card-columns container_for_categories">
                 
 
             </div>
@@ -214,7 +205,8 @@ const categories_component = `
 
 
 const category_card = `
-                <div class="col-md-3 col-sm-6 mb-3">
+                
+                <div class=" mb-3 ">
                     <div class="card" id="category_{2}" onclick="route_to_groups_for_category({2})">
                         <img class="card-img-top" id=category_img_{2}" src="{3}" alt="category image cap">
                         <div class="card-body">
@@ -224,12 +216,13 @@ const category_card = `
                         </div>
                     </div>
                 </div>
+                
 `
 
 
 
 const new_group_form = _.template(`
-<div class="col-sm-9 col-xs-12 content pt-3 pl-0">
+<div class="col-sm-12 col-xs-12 content pt-3 pl-0">
 <h5 class="mb-0" ><strong>new group</strong></h5>
 <span class="text-secondary">groups <i class="fa fa-angle-right"></i> add a new group</span>
 

@@ -15,16 +15,16 @@ config = {
 }
 
 # Construct connection string
-try:
-    connection = mysql.connector.connect(**config)
-    print("Connection established")
-except mysql.connector.Error as err:
-    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-        print("Something is wrong with the user name or password")
-    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        print("Database does not exist")
-    else:
-        print(err)
+# try:
+#     connection = mysql.connector.connect(**config)
+#     print("Connection established")
+# except mysql.connector.Error as err:
+#     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+#         print("Something is wrong with the user name or password")
+#     elif err.errno == errorcode.ER_BAD_DB_ERROR:
+#         print("Database does not exist")
+#     else:
+#         print(err)
 
 
 def do_query_with_change(query_str):
@@ -33,19 +33,30 @@ def do_query_with_change(query_str):
     with connection.cursor() as cursor:
         cursor.execute(query_str)
         connection.commit()
-
     connection.close()
+
     return True
 
 
 def do_query(query_str):
     connection = mysql.connector.connect(**config)
-
     with connection.cursor() as cursor:
         cursor.execute(query_str)
         result = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
         rows = [dict(zip(columns, row)) for row in result]
-
     connection.close()
     return rows
+
+
+
+# str_query = """
+# CREATE  or replace VIEW count_members_group AS
+#   SELECT count(group_id) as count, group_id
+#   FROM purchaser
+#   GROUP BY group_id
+# """
+# do_query_with_change(str_query)
+# print(do_query("select * from count_members_group"))
+# print(do_query("SELECT * FROM `groups` JOIN count_members_group"))
+
