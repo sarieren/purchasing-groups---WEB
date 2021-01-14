@@ -267,7 +267,7 @@ const new_group_form = _.template(`
 
 
 
-const forum_msg = `
+const forum_msg2 = `
                 <div class="tab-pane fade show active p-3" id="custom-home" role="tabpanel"
                         aria-labelledby="nav-home" id="{0}">
 
@@ -301,4 +301,45 @@ const forum_msg = `
                     
 
                     </div>
+`
+
+
+const forum_msg = `
+<div class="tab-pane fade show active p-3" id="custom-home" role="tabpanel" aria-labelledby="nav-home" id="{0}">
+
+<!--Single feed-->
+<div class="feed-single mb-3 row">
+    <div class="col-sm-12 col-md-3 msg-meta">
+        <span id=""
+            class="user-letter-msg customer-circle end text-light text-center pt-2 mt-4 user_img_letter ml-3">{6}</span>
+        <h5 class="mt-1" style="font-weight: 600;">{0}</h5>
+    </div>
+    <div class="col-sm-12 col-md-8 msg-data">
+        <h6 class="mt-1">
+            <small class="text-muted pl-3"><i class="fa fa-clock"></i>{4}</small>
+            <hr>
+        </h6>
+
+
+        <div>{1}</div>
+
+        <div class="feed-footer px-1">
+            <h6 class="mt-1">
+                <hr>
+            </h6>
+            <div>
+                <a href="" class=" blue-text" onclick="add_like_for_group({5})">Like <i
+                        class="fa-thumbs-up fa"></i></a>
+                <a href="" class="pr-3 blue-text"><i class="fa fa-heart"></i> {3} LIKES </a>
+            </div>
+
+        </div>
+        <!-- </div> -->
+    </div>
+</div>
+<!--/Single feed-->
+<hr>
+
+
+</div>
 `

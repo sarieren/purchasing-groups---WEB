@@ -63,3 +63,50 @@
 .full_height{
     height: 100%;
 }
+
+
+.user-letter-msg{
+    /* transform: scale(2, 2); */
+    margin-top:5px;
+    width: 80px;
+    height: 80px;
+font-size: 50px;
+}
+.msg-meta{
+    box-sizing: border-box;
+    padding: 2em;
+    margin: 1em;
+    background-color: rgba(187, 182, 182, 0.664);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgb(6, 6, 134);
+    font-size: 20px;
+}
+.msg-data{
+    box-sizing: border-box;
+    margin: 1em;
+    padding-right: 2em;
+    padding-left: 2em;
+    padding-top:1em;
+    padding-bottom: 1em;
+    border-style:solid;
+    border-color: rgba(6, 6, 134, 0.397);
+    border-width: 1px;
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    justify-content: space-between;
+
+}
+.feed-footer div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -15px;
+    margin-bottom: -15px;
+}
+
+.blue-text{
+    color:rgb(6, 6, 134)
+}

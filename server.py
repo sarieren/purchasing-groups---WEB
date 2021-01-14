@@ -189,6 +189,14 @@ def add_purchaser_to_group():
 def get_group_id_by_user_name(user):
     return Response(json.dumps(purchaser_module.get_id_group_by_name(user)))
 
+@app.route("/groups/like/msg_id", methods=["POST"])
+def add_likes_to_msg():
+    data = request.form
+    forums_module.add_like({"user": data["user_name"], "time":  data["time"], "group" : data["group_id"]})
+    return Response("success", 200)
+
+    
+
 def group_to_dict(G):
     # G = group_tuple[0]
     # num_of_subsribers = group_tuple[1]

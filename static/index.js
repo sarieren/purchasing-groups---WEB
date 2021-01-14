@@ -1,4 +1,6 @@
+
 $(document).ready(() => {
+    run_slick()
     $.when(
         $.ajax({
             url: "components\\main_content.js",
@@ -9,7 +11,7 @@ $(document).ready(() => {
             $(deferred.resolve);
         })
     ).done(function () {
-
+        // init_custom_script()
         init_page()
     });
 });
@@ -25,6 +27,8 @@ user_name = ""
 num_of_app_visitors = 999
 num_of_visitors_likes = 567
 number_of_groups_created = 100
+indetails = false
+slideIndex = 0
 
 get_user_data = () => {
 
@@ -147,6 +151,10 @@ stop_load = () => $(".loader-wrapper").css('display', 'none')
 
 
 route_to_home_page = () => {
+    // if(indetails){
+    //     destroy_slick()
+    //     indetails = false
+    // }
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
@@ -169,7 +177,7 @@ subscribe_user_to_group = (target) => {
         "group_id": target.value,
         "user_name": user_name
     }
-     loading()
+    loading()
 
     $.ajax({
         type: "POST",
@@ -233,7 +241,7 @@ route_to_view_your_groups = () => {
 }
 
 filtered_users_group = (item) => {
-    
+
     if (item.nodeType == 3) return false
     group_id = item.id.split("_")[2]
     return user_groups_id.indexOf(parseInt(group_id)) >= 0
@@ -243,22 +251,20 @@ filtered_users_group = (item) => {
 
 
 route_to_groups_for_category = (cat_id) => {
-    // e.stopPropagation();
 
-    // cat_id = 
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
 
     filtered_category_group = (item) => {
-        console.log(item, typeof(item))
+        console.log(item, typeof (item))
         if (item.nodeType == 3) return false
         return item.id.split("_")[3] == "" + cat_id
-        
+
     }
     $("#router-outlet").html(table_of_groups.format("Groups for Category " + cat_ob[cat_id], "Add New Group", "cat", "route_to_create_new_group()"))
     filter_and_add_list_elements_to_father_element("#rows_of_recent_groups_table_cat", all_groups_elements, filtered_category_group)
-    
+
 }
 
 post_new_group_form = (e) => {
@@ -303,18 +309,62 @@ post_new_group_form = (e) => {
 }
 
 async function route_to_group_details(group_id) {
-    //get group details from server , includes imgs
+    $('.slider-nav').html("")
+    $(".slider-for").html("")
+    if(user_groups_id.indexOf(parseInt(group_id)) >= 0){
+        $("#is_already_subscrine_details").show()
+        $("#subscribe_in_details").hide()
+        $("#forum_of_group").show()
+    } else {
+        $("#is_already_subscrine_details").hide()
+        $("#subscribe_in_details").show()
+        $("#forum_of_group").hide()
+    }
+    // indetails = true
+    // // $("#sliders").empty()
+    // imgs_collection1 = $(".slider-for")
+    // // (`<div class="slider-for border group_details_imgs_of_product"
+    // //                     id="group_details_imgs_of_product_1">
+    // //                     </div>`) //
+    // imgs_collection2 = $(".slider-nav")
+    // // (`<div class="slider-nav pl-4 pr-4 bg-secondary shadow group_details_imgs_of_product"
+    // //                     id="group_details_imgs_of_product_2">
+    // //                     </div>`) //("#group_details_imgs_of_product_1")
+    // run_slick()
+    
+    slideIndex = 0
+    // while(slideIndex > 0){
+    //         $('.slider-nav').slick('slickRemove',slideIndex - 1);
+    //         $('.slider-for').slick('slickRemove',slideIndex - 1);
+    //         if (slideIndex !== 0){
+    //             slideIndex--;
+    //         }
+        
+    // }
+    // // $("#sliders").append(imgs_collection1)
+    // // $("#sliders").append(imgs_collection2)
+
     group = list_all_groups.find(G => G.group_id == group_id)
     urls = cat_ob[group.category + "_urls"]
-    imgs_collection1 = $("#group_details_imgs_of_product_1")
-    imgs_collection2 = $("#group_details_imgs_of_product_1")
-    for (let i = 1; i < 7; i++) {
-        url = urls[Math.floor(Math.random() * urls.length)]
-        // $("img[src='assets\\img\\slick" + i + ".jpg']").attr("src", url)
-        $("#img1_" + i).attr("src", url)
-        $("#img2_" + i).attr("src", url)
-    }
 
+    
+
+    for (let i = 1; i < 3; i++) {
+        url = urls[Math.floor(Math.random() * urls.length)]
+        // img1 = $.parseHTML(`<img src="${url}"/>`)
+        // img2 = $.parseHTML(`<img src="${url}"/>`)
+        // $('.slider-nav').append(img1)
+        // $('.slider-nav').append(img2)
+       
+        slideIndex++;
+        $('.slider-nav').slick('slickAdd', `<img src="${url}"/>`)
+        $('.slider-for').slick('slickAdd', `<img src="${url}"/>`)
+
+        // imgs_collection1.append(img1)
+        // imgs_collection2.append(img2)
+ 
+    }
+    // run_slick()
     //render
     $("#router-outlet").addClass("hidden")
     //add value for subscirbe btn - to get in subscribe time
@@ -329,6 +379,7 @@ async function route_to_group_details(group_id) {
     $("#group_duedate").html(group.end_date)
     $("#group_manager").html(group.manager)
     $("#group_details").removeClass("hidden")
+    // run_slick()
 
 
 
@@ -349,7 +400,8 @@ async function route_to_group_details(group_id) {
                 msg = M['message_']
                 likes = M['count_like']
                 time = M['end_time'] + ", " + M['end_time']
-                let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+                console.log(uname, uname.charAt(0))
+                let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time, group_id, uname.charAt(0)))
                 forum.append(msg_ele)
             });
         }
@@ -377,7 +429,7 @@ function createMsg(e) {
             msg = returnedMsgs['message_']
             likes = returnedMsgs['count_like']
             time = returnedMsgs['end_date'] + ", " + returnedMsgs['end_time']
-            let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+            let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time, gid, uname.charAt(0)))
             forum.append(msg_ele)
             msg: $("#msg").attr("value", "")
 
@@ -449,4 +501,137 @@ filter_and_add_list_elements_to_father_element = (father_ele_name, child_list_el
     filterd_list = child_list_ele.filter(filter_func)
     console.log(child_list_ele, filterd_list)
     $(father_ele_name).append(filterd_list)
+}
+
+destroy_slick = () => {
+
+    
+  
+}
+
+run_slick = () => {
+
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        focusOnSelect: true,
+        autoplay: true,
+        autoplaySpeed: 100,
+        dots: false,
+    });
+}
+
+// add_like_for_group = (group_id, username, date, time) => {
+//     $.post
+// }
+
+/*============Dynamic modal content ============*/
+$('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+    modal.find('.modal-body input').val(recipient)
+});
+/*============Dynamic modal content ============*/
+
+//Tooltips
+$('[data-toggle="tooltip"]').tooltip();
+
+//Popovers
+$('[data-toggle="popover"]').popover();
+
+//Dismissed popover
+$('.popover-dismiss').popover({
+    trigger: 'focus'
+})
+
+//Colored
+if ($('.js-secondary').length) {
+    var switchery = new Switchery(document.querySelector('.js-secondary'), {
+        color: '#DDDDDD'
+    });
+    var switchery = new Switchery(document.querySelector('.js-primary'), {
+        color: '#0073AA'
+    });
+    var switchery = new Switchery(document.querySelector('.js-success'), {
+        color: '#29A744'
+    });
+    var switchery = new Switchery(document.querySelector('.js-info'), {
+        color: '#169DB2'
+    });
+    var switchery = new Switchery(document.querySelector('.js-warning'), {
+        color: '#F1C40F'
+    });
+    var switchery = new Switchery(document.querySelector('.js-danger'), {
+        color: '#ED6A5A'
+    });
+    var switchery = new Switchery(document.querySelector('.js-dark'), {
+        color: '#333'
+    });
+
+
+    /*===========Bootstrap 4 validation==================*/
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+    /*===========Bootstrap 4 validation==================*/
+}
+
+/*========== Toggle Sidebar width ============ */
+function toggle_sidebar() {
+    $('#sidebar-toggle-btn').toggleClass('slide-in');
+    $('.sidebar').toggleClass('shrink-sidebar');
+    $('.content').toggleClass('expand-content');
+
+    //Resize inline dashboard charts
+    $('#incomeBar canvas').css("width", "100%");
+    $('#expensesBar canvas').css("width", "100%");
+    $('#profitBar canvas').css("width", "100%");
+}
+
+
+/*==== Header menu toggle navigation show and hide =====*/
+
+function toggle_dropdown(elem) {
+    $(elem).parent().children('.dropdown').slideToggle("fast");
+    $(elem).parent().children('.dropdown').toggleClass("animated flipInY");
+}
+
+$("body").not(document.getElementsByClassName('dropdown-toggle')).click(function () {
+    if ($('.dropdown').hasClass('animated')) {
+        //$('.dropdown').removeClass("animated flipInY");
+    }
+});
+/*==== Header menu toggle navigation show and hide =====*/
+
+
+/*==== Sidebar toggle navigation show and hide =====*/
+
+function toggle_menu(ele) {
+    //close all ul with children class that are open except the one with the selected id
+    $('.children').not(document.getElementById(ele)).slideUp("Normal");
+    $("#" + ele).slideToggle("Normal");
+    localStorage.setItem('lastTab', ele);
 }

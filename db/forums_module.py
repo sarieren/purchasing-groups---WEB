@@ -17,13 +17,21 @@ class ForumMsg:
 
 
 
-def add(forums):
+# def add(forums):
 
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
  
-    n = now.split(" ")
+#     n = now.split(" ")
 
-    query = '''INSERT INTO forums 
+#     query = '''INSERT INTO forums 
+#     VALUES({}, '{}', '{}', {}, '{}', '{}')'''.format(forums.group_id, forums.user_name, forums.message_, forums.count_like , n[0], n[1])
+#     connection.do_query_with_change(query)
+#     return True
+
+def add(forums):
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    n = now.split(" ")
+    query = '''INSERT INTO forums(group_id, user_name, message_, count_like, end_date, end_time) 
     VALUES({}, '{}', '{}', {}, '{}', '{}')'''.format(forums.group_id, forums.user_name, forums.message_, forums.count_like , n[0], n[1])
     connection.do_query_with_change(query)
     return True
@@ -55,14 +63,17 @@ def get_forum(dict_forum):
     f = ForumMsg(group_id, user_name, message_, count_like, end_date, end_time)
     return f
 
-def add_like(forums):
+# def add_like(forums):
 
+#     query = '''UPDATE forums SET count_like =count_like + 1
+#     WHERE group_id={} and user_name = '{}' 
+#     and message_ = '{}' and end_date = '{}'
+#     and end_time = '{}' '''.format(forums.group_id, forums.user_name, forums.message_, forums.end_date, forums.end_time)
+#     connection.do_query_with_change(query)
+def add_like(id_):
     query = '''UPDATE forums SET count_like =count_like + 1
-    WHERE group_id={} and user_name = '{}' 
-    and message_ = '{}' and end_date = '{}'
-    and end_time = '{}' '''.format(forums.group_id, forums.user_name, forums.message_, forums.end_date, forums.end_time)
+    WHERE id={} '''.format(id_)
     connection.do_query_with_change(query)
-
 
 
 
