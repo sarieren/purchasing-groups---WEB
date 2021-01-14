@@ -5,6 +5,7 @@ import db.user_module as user_module
 import db.category_module as category_module
 import db.group_module as group_module
 import db.purchaser_module as purchaser_module
+from db.purchaser_module import Purchaser
 import db.forums_module as forums_module
 import json
 import db.api_picture as api_picture
@@ -14,15 +15,35 @@ app = Flask(__name__, static_url_path='',
             static_folder='static', template_folder='templates')
 
 
+@app.errorhandler(404)
+def not_found(e):
+    return redirect(url_for('launch_error_page'))
+
+@app.route('/NOT_FOUND')
+def launch_error_page():
+    return app.send_static_file('error-404.html')
+
 @app.route('/')
 def root():
-    return redirect(url_for('login'))
+    is_logged_in = request.cookies.get('logged_in')
+    if is_logged_in == 'True':
+        return redirect(url_for('launch_homepage'))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/login')
 def login():
-    return app.send_static_file('login.html')
+    is_logged_in = request.cookies.get('logged_in')
+    if is_logged_in == 'True':
+        return redirect(url_for('launch_homepage'))
+    display_login_error = 'display:block' if request.cookies.get('login_error') == 'True' else 'display:none'
+    display_register_error = 'display:block' if request.cookies.get('already_register') == 'True' else 'display:none'
 
+    resp = make_response(render_template('login.html', login_error=display_login_error, register_error=display_register_error))
+    resp.set_cookie('already_register', 'False')
+    resp.set_cookie('login_error', 'False')
+    return resp
 
 @app.route('/submit_login', methods=['GET'])
 def authenticate_url():
@@ -41,20 +62,25 @@ def get_group_forum(group_id):
     if len(forum) > 0:
         return Response(json.dumps(forum), 200) 
     else:
-        return Response(json.dumps([]), 200)  # {"no_msgs":"No messages in this forum"}), 200)
+       return Response(json.dumps([]), 200)
 
 
-@app.route('/forums', methods = ['POST'])
+@app.route('/forums', methods=['POST'])
 def add_msg():
     user_name = request.cookies.get('username')
     data = request.form
     group_id = data['groupId']
     msg = data['msg']
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    n = now.split(" ")
-    new_msg = ForumMsg(group_id, user_name, msg, 0, n[0], n[1])
-    forums_module.add(new_msg)
-    return Response(json.dumps(new_msg.__dict__), 200)
+    purchaser = Purchaser(user_name, group_id)
+    print("purchaser = ", purchaser.user_name)
+    # if not purchaser_module.exist(purchaser):
+    if purchaser_module.exist(purchaser):
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        n = now.split(" ")
+        new_msg = ForumMsg(group_id, user_name, msg, 0, n[0], n[1])
+        forums_module.add(new_msg)
+        return Response(json.dumps(new_msg.__dict__), 200)
+    return Response(json.dumps({'Success': True}), 200)
 
 
 @app.route('/submit_login', methods=['POST'])
@@ -70,7 +96,9 @@ def authenticate():
         resp.set_cookie('username', user_name)
         return resp
     else:
-        return redirect(url_for('root'))
+        resp = make_response(redirect(url_for('root')))
+        resp.set_cookie('login_error', 'True')
+        return resp
 
 
 @app.route('/register', methods=['GET'])
@@ -93,8 +121,11 @@ def register_new_purchaser():
         resp.set_cookie('username', user_name)
         return resp
     else:
-        # pop error message
-        return redirect(url_for('login'))
+        # pop error message: "You have already registered, please sign in!"
+        resp = make_response (redirect(url_for('login')))
+        resp.set_cookie('already_register', 'True')
+        resp.set_cookie('login_error', 'False')
+        return resp
 
 
 @app.route('/groupBy', methods=['GET'])
@@ -183,13 +214,13 @@ def add_purchaser_to_group():
 def get_group_id_by_user_name(user):
     return Response(json.dumps(purchaser_module.get_id_group_by_name(user)))
 
+
 @app.route("/groups/like/msg_id", methods=["POST"])
 def add_likes_to_msg():
     data = request.form
     forums_module.add_like({"user": data["user_name"], "time":  data["time"], "group" : data["group_id"]})
     return Response("success", 200)
 
-    
 
 def group_to_dict(G):
     # G = group_tuple[0]
