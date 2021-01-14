@@ -6,6 +6,7 @@ import db.category_module as category_module
 import db.group_module as group_module
 import db.purchaser_module as purchaser_module
 import db.forums_module as forums_module
+import db.send_mail as send_mail
 import json
 import db.api_picture as api_picture
 from datetime import datetime
@@ -189,7 +190,10 @@ def add_likes_to_msg():
     forums_module.add_like({"user": data["user_name"], "time":  data["time"], "group" : data["group_id"]})
     return Response("success", 200)
 
-    
+
+@app.route("/send_mails")
+def send_mails():
+    send_mail.send_message() 
 
 def group_to_dict(G):
     # G = group_tuple[0]
@@ -208,7 +212,7 @@ def group_to_dict(G):
     return obj
 
 
-app.run(port=3000, debug=1)
+app.run(port=5000, debug=1)
 
 
 

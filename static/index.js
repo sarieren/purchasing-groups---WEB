@@ -170,6 +170,9 @@ subscribe_user_to_group = (target) => {
         success: function (data) {
             show_alert("success", "You have been to the purchasing group")
             user_groups_id.push(data["group_id"])
+            $("#is_already_subscrine_details").show()
+        $("#subscribe_in_details").hide()
+        $("#forum_of_group").show()
             stop_load()
         },
         error: function (data) {
@@ -279,8 +282,8 @@ post_new_group_form = (e) => {
 }
 
 async function route_to_group_details(group_id) {
-    $('.slider-nav').html("")
-    $(".slider-for").html("")
+    // $('.slider-nav').html("")
+    // $(".slider-for").html("")
     if(user_groups_id.indexOf(parseInt(group_id)) >= 0){
         $("#is_already_subscrine_details").show()
         $("#subscribe_in_details").hide()
