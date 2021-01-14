@@ -1,4 +1,4 @@
-import connection as connection
+import db.connection as connection
 from datetime import datetime
 
 
@@ -63,8 +63,4 @@ def add_like(forums):
     and end_time = '{}' '''.format(forums.group_id, forums.user_name, forums.message_, forums.end_date, forums.end_time)
     connection.do_query_with_change(query)
 
-
-
-f = FormMsg(1, "sara", "hello", 0, '2021-01-13', '13:23:48') 
-add_like(f)
 

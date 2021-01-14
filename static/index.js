@@ -171,7 +171,7 @@ subscribe_user_to_group = (group_id) => {
     $.ajax({
           type: "POST",
           url: "/submit_new_group", // it's the URL of your component B
-          data: data_dict
+          data: data_dict,
           success: function(G)
           {
             show_alert("success", "You have been to the purchasing group")
