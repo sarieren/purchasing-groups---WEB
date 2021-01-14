@@ -1,4 +1,4 @@
-import db.connection as connection
+import connection as connection
 
 
 class Category:
@@ -28,6 +28,7 @@ def get_id_from_name(name):
     if res:
         return res[0].get("id", 0)
     return None
+
 
 
 def get_name_from_id(id_):

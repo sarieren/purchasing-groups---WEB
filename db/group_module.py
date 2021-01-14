@@ -126,3 +126,17 @@ def get_all_gruops_without_preproccess():
     query = '''SELECT * FROM `groups`  NATURAL JOIN count_members_group WHERE groups.id = count_members_group.group_id'''
     res = connection.do_query(query)
     return list(res)
+
+
+
+
+
+def get_all_user_name_by_group_id(group_id):
+
+    query = '''select user_name, user_mail
+    from (select id, manager from groups) as g
+    natural join (select user_name, user_mail from user) as u
+    where g.id = {} and u.user_name = g.manager'''.format(group_id)
+    res = connection.do_query(query)
+
+    return list(res)

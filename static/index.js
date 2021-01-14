@@ -175,10 +175,12 @@ subscribe_user_to_group = (target) => {
         type: "POST",
         url: "/purchasers", // it's the URL of your component B
         data: data_dict,
-        success: function (G) {
+        success: function (data) {
             show_alert("success", "You have been to the purchasing group")
-            console.log("post", data)
-            user_groups_id.append(group_id)
+            // console.log("post", data)
+            console.log("post", data_dict)
+            console.log("post", data_dict["group_id"])
+            user_groups_id.append(data_dict["group_id"])
             stop_load()
         },
         error: function (data) {
