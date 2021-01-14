@@ -243,8 +243,15 @@ def group_to_dict(G):
     }
     return obj
 
+import os
+ON_HEROKU = os.environ.get('ON_HEROKU')
 
-app.run(port=5000)
+if ON_HEROKU:
+    # get the heroku port
+    port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
+else:
+    port = 3000
+    app.run(port=port)
 
 
 
