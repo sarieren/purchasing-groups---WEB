@@ -385,13 +385,15 @@ function createMsg(e) {
             msg: $("#msg").attr("value")
         },
         function (returnedMsgs) {
-            returnedMsgs = JSON.parse(returnedMsgs)
+            returnedMsg = JSON.parse(returnedMsgs)
+            console.log(returnedMsg)
             forum = $("#forum_of_group")
-            gid = returnedMsgs.group_id
-            uname = returnedMsgs.user_name
-            msg = returnedMsgs['message_']
-            likes = returnedMsgs['count_like']
-            time = returnedMsgs['end_date'] + ", " + returnedMsgs['end_time']
+            gid = returnedMsg.group_id
+            uname = returnedMsg.user_name
+            msg = returnedMsg['message_']
+            likes = returnedMsg['count_like']
+            time = returnedMsg['end_date'] + ", " + returnedMsg['end_time']
+            console.log(msg)
             let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time, gid, uname.charAt(0)))
             forum.append(msg_ele)
             msg: $("#msg").attr("value", "")
