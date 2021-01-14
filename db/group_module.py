@@ -11,7 +11,7 @@ class Group:
         self.manager = user_name
 
         self.category_id = category_id
-        self.end_date = end_time_day 
+        self.end_date = end_time_day
         self.end_time = end_time_time + ":00"
         self.description_group = description
         if id != -1:
@@ -21,8 +21,9 @@ class Group:
 def add(group_):
     query = '''INSERT INTO `groups`(group_name, item_name, max_price, category_id, manager, end_date, end_time, description_group) 
     VALUES('{}', '{}', {}, {}, '{}', '{}', '{}', '{}')'''.format(group_.group_name, group_.item_name, group_.max_price,
-                                                           group_.category_id, group_.manager, group_.end_date, group_.end_time,
-                                                           group_.description_group)
+                                                                 group_.category_id, group_.manager, group_.end_date, group_.end_time,
+                                                                 group_.description_group)
+    print("********************", group_)
     connection.do_query_with_change(query)
 
     group_id = get_id_group(group_)
@@ -45,11 +46,12 @@ def get_id_group(group_):
 def get_all_groups():
     groups = []
 
-    query = '''SELECT * FROM `groups`'''
+    query = '''SELECT * FROM `groups`  NATURAL JOIN count_members_group WHERE groups.id = count_members_group.group_id'''
     res = connection.do_query(query)
     for group in res:
-        id_ = res[0].get("id")
-        groups.append((get_group(group), get_count_member_by_group_id(id_)))
+        count = group.get("count")
+        del group["count"]
+        groups.append((get_group(group), count))
 
     return groups
 
@@ -78,11 +80,13 @@ def get_group(dict_group):
     manager = dict_group.get("manager")
 
     end_date = str(dict_group.get("end_date"))
-    end_time = str(dict_group.get("end_time"))#[:len(dict_group.get("end_time"))-3]
+    # [:len(dict_group.get("end_time"))-3]
+    end_time = str(dict_group.get("end_time"))
     end_time = end_time[:len(end_time) - 3]
     description_group = dict_group.get("description_group")
-    
-    g = Group(manager, group_name, item_name, max_price, category_id, end_date, end_time,description_group, id_)
+
+    g = Group(manager, group_name, item_name, max_price, category_id,
+              end_date, end_time, description_group, id_)
     return g
 
 
@@ -105,7 +109,7 @@ def get_count_member_by_group_id(id_):
     query = '''SELECT count(*) FROM purchaser 
     WHERE group_id = {}'''.format(id_)
     res = connection.do_query(query)
-   
+
     return res[0].get('count(*)')
 
 
@@ -116,3 +120,9 @@ def get_id_groups():
     for id_ in res:
         id_list.append(id_.get("id"))
     return id_list
+
+
+def get_all_gruops_without_preproccess():
+    query = '''SELECT * FROM `groups`  NATURAL JOIN count_members_group WHERE groups.id = count_members_group.group_id'''
+    res = connection.do_query(query)
+    return list(res)

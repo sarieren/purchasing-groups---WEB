@@ -64,3 +64,6 @@ def add_like(forums):
     connection.do_query_with_change(query)
 
 
+
+
+

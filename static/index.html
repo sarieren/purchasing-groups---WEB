@@ -46,26 +46,28 @@
 
 <body>
     <!--Page loader-->
-    <div class="loader-wrapper" id="loaedr" style="display:none">
-        <div class="loader-circle">
+    <div class="loader-wrapper" id="loaedr" style="opacity: 0.95;background-color: gray">
+         <div class="loader-circle">
             <div class="loader-wave"></div>
         </div>
+        <h1 style="color: #0D47A1; position: absolute; bottom: 15%;width: 100%; text-align: center; font-weight: 800; font-size: 36px;">loading...</h1>
     </div>
     <!--Page loader-->
 
     <button type="button" id="show_alert_success" class="btn btn-success hidden" >
         <i class="fa fa-check"></i> alert-success
-     </button>
+    </button>
     <!--Page Wrapper-->
+
 
     <div class="container-fluid">
 
         <!--Header-->
-        <div class="row header shadow-sm">
+        <div class="row header shadow-sm" >
 
             <!--Logo-->
             <div class="col-sm-3 pl-0 text-center header-logo">
-                <div class="bg-theme mr-3 pt-3 pb-2 mb-0" id ="logo">
+                <div class="bg-theme mr-3 pt-3 pb-2 mb-0" id ="logo" style="height: 100%;">
                     <h3 class="logo"><a href="#" class="text-secondary logo"><i class="fa fa-users"></i> Group Buy</a>
                     </h3>
                 </div>
@@ -77,7 +79,7 @@
                 <div class="row">
 
                     <!--Menu Icons-->
-                    <div class="col-sm-4 col-8 pl-0">
+                    <div class="col-sm-4 col-8 pl-0 mt-2">
                         <!--Toggle sidebar-->
                         <span class="menu-icon" onclick="toggle_sidebar()">
                             <span id="sidebar-toggle-btn" class="slide-in"></span>
@@ -118,14 +120,14 @@
 
                     <!--Search box and avatar-->
                     <div class="col-sm-8 col-4 text-right flex-header-menu justify-content-end">
-                        <div class="search-rounded mr-3">
+                        <div class="search-rounded mr-3 mt-2">
                             <input type="text" class="form-control search-box" placeholder="Search For Group..." />
                         </div>
                         <div class="mr-4">
                             <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img alt="{user_img_path}" class="rounded-circle user_img_path" width="40px"
-                                    height="40px">
+                                <span id="user_img_letter" class="customer-circle end text-light text-center pt-2 mt-4 user_img_letter ml-3"></span>
+                                <!-- <img alt="{user_img_path}" class="rounded-circle user_img_path" width="40px" height="40px"> -->
                             </a>
                             <div class="dropdown-menu dropdown-menu-right mt-13" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="#" id="link_to_user_profile"><i
@@ -149,8 +151,9 @@
             <div class="col-sm-3 col-xs-6 sidebar pl-0">
                 <div class="inner-sidebar mr-3">
                     <!--Image Avatar-->
-                    <div class="avatar text-center">
-                        <img alt="{user_img_path}" class="rounded-circle user_img_path" />
+                    <div class="avatar text-center" style="padding: 2em">
+                        <span id="user_img_letter" class="customer-circle end text-light text-center pt-2 mt-4 user_img_letter ml-2"></span>
+                        <!-- <img alt="{user_img_path}" class="rounded-circle user_img_path" /> -->
                         <p><strong id="user_name">{name}</strong></p>
                         <span class="text-primary small"><strong id="user_mail">{mail}</strong></span>
                     </div>
@@ -245,7 +248,7 @@
                                         <hr>
                                         <h4 class="mt-5 mb-5">Manager is: <span id="group_manager"> </span>,  Due Date is: <span id="group_duedate"></span></h4>
 
-                                        <div class="buttom_float">
+                                        <div class=" mt-5">
                                             <button type="button" id="btn_subscribe"
                                                 class="btn btn-theme rounded-0 mr-3 px-3">
                                                 <i class="fa fa-shopping-cart mr-3"></i> SUBSCRIBE
