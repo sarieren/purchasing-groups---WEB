@@ -71,7 +71,7 @@ get_groups_data = () => {
 
 get_users_group_id = (username) => {
     return $.get("/purchasers/" + username, (res) => {
-        user_groups_id = JSON.parse(res)
+        user_groups_id = Array.from(JSON.parse(res))
     })
 
 
@@ -112,9 +112,6 @@ init_page = () => {
         }
         all_groups_elements = $.parseHTML(temp_group_str)
 
-
-
-
         //event listeners
         $("#btn_view_all_groups_in_list").click(() => route_to_view_all_groups())
         $("#btn_subscribe").click((e) => subscribe_user_to_group(e.currentTarget, e))
@@ -134,18 +131,6 @@ loading = () => $(".loader-wrapper").css('display', 'block')
 stop_load = () => $(".loader-wrapper").css('display', 'none')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 route_to_home_page = () => {
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
@@ -161,7 +146,6 @@ route_to_home_page = () => {
 }
 
 subscribe_user_to_group = (target) => {
-    console.log("sub", target)
     //get user and main data from cookie
     user_name = document.cookie.split("username=")[1]
 
@@ -175,10 +159,9 @@ subscribe_user_to_group = (target) => {
         type: "POST",
         url: "/purchasers", // it's the URL of your component B
         data: data_dict,
-        success: function (G) {
+        success: function (data) {
             show_alert("success", "You have been to the purchasing group")
-            console.log("post", data)
-            user_groups_id.append(group_id)
+            user_groups_id.push(data["group_id"])
             stop_load()
         },
         error: function (data) {
@@ -186,7 +169,6 @@ subscribe_user_to_group = (target) => {
             stop_load()
         }
     });
-    console.log("user subscribes to group")
 }
 
 
@@ -201,17 +183,13 @@ route_to_create_new_group = () => {
     }))
     $("#router-outlet").append(content)
     date = format_date(new Date())
-    console.log(date)
     $('#date_').attr("min", date)
-    // $("#router-outlet").html(create_new_group)
 
-    //    $("#frm1").submit(post_new_group_form)
     $(document).on('submit', '#frm1', post_new_group_form)
 
 }
 
 route_to_view_all_groups = () => {
-    console.log("view all was clicked")
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
@@ -222,7 +200,6 @@ route_to_view_all_groups = () => {
 }
 
 route_to_view_your_groups = () => {
-    console.log("view all was clicked")
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
@@ -251,8 +228,8 @@ route_to_groups_for_category = (cat_id) => {
     $("#router-outlet").empty()
 
     filtered_category_group = (item) => {
-        console.log(item, typeof(item))
-        if (item.nodeType == 3) return false
+        if (item.nodeType == 3)
+            return false
         return item.id.split("_")[3] == "" + cat_id
         
     }
@@ -270,36 +247,29 @@ post_new_group_form = (e) => {
         type: "POST",
         url: "/submit_new_group", // it's the URL of your component B
         data: $("#frm1").serialize(), // serializes the form's elements
-        success: function (G) {
+        success: function (data) {
             list_all_groups.push({
-                group_id: G.id_,
-                group_name: G.group_name,
-                num_of_subscibers: 8,
-                item_name: G.item_name,
-                max_price: G.max_price,
-                manager: G.manager,
-                category: cat_ob[G.category_id],
-                end_data: G.end_data,
-                description_group: G.description_group
+                group_id: data.id_,
+                group_name: data.group_name,
+                num_of_subscibers: data.num_of_subscibers,
+                item_name: data.item_name,
+                max_price: data.max_price,
+                manager: data.manager,
+                category: cat_ob[data.category_id],
+                end_data: data.end_data,
+                description_group: data.description_group
 
             })
 
             route_to_home_page()
             stop_load()
-            // $("#loader").css('display', 'none')
             show_alert("success", "You have created a new purchasing group!")
-            console.log("post", data)
-
-            // show the data you got from B in result div
-            //$("#result").html(data);
         },
         error: function (data) {
             stop_load()
             show_alert("error", "there was a problem with adding a new group, please try again")
         }
     });
-
-    //   });
 }
 
 async function route_to_group_details(group_id) {
@@ -310,7 +280,6 @@ async function route_to_group_details(group_id) {
     imgs_collection2 = $("#group_details_imgs_of_product_1")
     for (let i = 1; i < 7; i++) {
         url = urls[Math.floor(Math.random() * urls.length)]
-        // $("img[src='assets\\img\\slick" + i + ".jpg']").attr("src", url)
         $("#img1_" + i).attr("src", url)
         $("#img2_" + i).attr("src", url)
     }
@@ -388,8 +357,6 @@ function createMsg(e) {
 const render_img = _.template(`<img src="<%=img_path%>" alt="">`);
 
 
-
-
 //UTILS
 compare_by_date = (a, b) => {
     return a.end_data - b.end_data
@@ -447,6 +414,5 @@ format_date = (date) => {
 
 filter_and_add_list_elements_to_father_element = (father_ele_name, child_list_ele, filter_func) => {
     filterd_list = child_list_ele.filter(filter_func)
-    console.log(child_list_ele, filterd_list)
     $(father_ele_name).append(filterd_list)
 }
