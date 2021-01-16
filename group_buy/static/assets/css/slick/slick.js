@@ -2725,7 +2725,7 @@
 
     };
 
-    Slick.prototype.swipeHandler = function(event) {
+    prototype.swipeHandler = function(event) {
 
         var _ = this;
 

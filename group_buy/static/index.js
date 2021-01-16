@@ -1,4 +1,6 @@
+
 $(document).ready(() => {
+    run_slick()
     $.when(
         $.ajax({
             url: "components\\main_content.js",
@@ -9,7 +11,7 @@ $(document).ready(() => {
             $(deferred.resolve);
         })
     ).done(function () {
-
+        // init_custom_script()
         init_page()
     });
 });
@@ -25,6 +27,8 @@ user_name = ""
 num_of_app_visitors = 999
 num_of_visitors_likes = 567
 number_of_groups_created = 100
+indetails = false
+slideIndex = 0
 
 get_user_data = () => {
 
@@ -71,7 +75,7 @@ get_groups_data = () => {
 
 get_users_group_id = (username) => {
     return $.get("/purchasers/" + username, (res) => {
-        user_groups_id = JSON.parse(res)
+        user_groups_id = Array.from(JSON.parse(res))
     })
 
 
@@ -112,9 +116,6 @@ init_page = () => {
         }
         all_groups_elements = $.parseHTML(temp_group_str)
 
-
-
-
         //event listeners
         $("#btn_view_all_groups_in_list").click(() => route_to_view_all_groups())
         $("#btn_subscribe").click((e) => subscribe_user_to_group(e.currentTarget, e))
@@ -134,19 +135,11 @@ loading = () => $(".loader-wrapper").css('display', 'block')
 stop_load = () => $(".loader-wrapper").css('display', 'none')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 route_to_home_page = () => {
+    // if(indetails){
+    //     destroy_slick()
+    //     indetails = false
+    // }
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
@@ -161,7 +154,6 @@ route_to_home_page = () => {
 }
 
 subscribe_user_to_group = (target) => {
-    console.log("sub", target)
     //get user and main data from cookie
     user_name = document.cookie.split("username=")[1]
 
@@ -169,7 +161,7 @@ subscribe_user_to_group = (target) => {
         "group_id": target.value,
         "user_name": user_name
     }
-     loading()
+    loading()
 
     $.ajax({
         type: "POST",
@@ -177,10 +169,17 @@ subscribe_user_to_group = (target) => {
         data: data_dict,
         success: function (data) {
             show_alert("success", "You have been to the purchasing group")
+<<<<<<< HEAD
             // console.log("post", data)
             console.log("post", data_dict)
             console.log("post", data_dict["group_id"])
             user_groups_id.append(data_dict["group_id"])
+=======
+            user_groups_id.push(data["group_id"])
+            $("#is_already_subscrine_details").show()
+        $("#subscribe_in_details").hide()
+        $("#forum_of_group").show()
+>>>>>>> 0a3571a2019f91c1865bf3c4903b0c6c7476f7f4
             stop_load()
         },
         error: function (data) {
@@ -188,7 +187,6 @@ subscribe_user_to_group = (target) => {
             stop_load()
         }
     });
-    console.log("user subscribes to group")
 }
 
 
@@ -203,17 +201,13 @@ route_to_create_new_group = () => {
     }))
     $("#router-outlet").append(content)
     date = format_date(new Date())
-    console.log(date)
     $('#date_').attr("min", date)
-    // $("#router-outlet").html(create_new_group)
 
-    //    $("#frm1").submit(post_new_group_form)
     $(document).on('submit', '#frm1', post_new_group_form)
 
 }
 
 route_to_view_all_groups = () => {
-    console.log("view all was clicked")
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
@@ -224,7 +218,6 @@ route_to_view_all_groups = () => {
 }
 
 route_to_view_your_groups = () => {
-    console.log("view all was clicked")
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
@@ -235,7 +228,7 @@ route_to_view_your_groups = () => {
 }
 
 filtered_users_group = (item) => {
-    
+
     if (item.nodeType == 3) return false
     group_id = item.id.split("_")[2]
     return user_groups_id.indexOf(parseInt(group_id)) >= 0
@@ -245,22 +238,20 @@ filtered_users_group = (item) => {
 
 
 route_to_groups_for_category = (cat_id) => {
-    // e.stopPropagation();
 
-    // cat_id = 
     $("#group_details").addClass("hidden")
     $("#router-outlet").removeClass("hidden")
     $("#router-outlet").empty()
 
     filtered_category_group = (item) => {
-        console.log(item, typeof(item))
+        console.log(item, typeof (item))
         if (item.nodeType == 3) return false
         return item.id.split("_")[3] == "" + cat_id
-        
+
     }
     $("#router-outlet").html(table_of_groups.format("Groups for Category " + cat_ob[cat_id], "Add New Group", "cat", "route_to_create_new_group()"))
     filter_and_add_list_elements_to_father_element("#rows_of_recent_groups_table_cat", all_groups_elements, filtered_category_group)
-    
+
 }
 
 post_new_group_form = (e) => {
@@ -272,51 +263,78 @@ post_new_group_form = (e) => {
         type: "POST",
         url: "/submit_new_group", // it's the URL of your component B
         data: $("#frm1").serialize(), // serializes the form's elements
-        success: function (G) {
+        success: function (data) {
             list_all_groups.push({
-                group_id: G.id_,
-                group_name: G.group_name,
-                num_of_subscibers: 8,
-                item_name: G.item_name,
-                max_price: G.max_price,
-                manager: G.manager,
-                category: cat_ob[G.category_id],
-                end_data: G.end_data,
-                description_group: G.description_group
+                group_id: data.id_,
+                group_name: data.group_name,
+                num_of_subscibers: data.num_of_subscibers,
+                item_name: data.item_name,
+                max_price: data.max_price,
+                manager: data.manager,
+                category: cat_ob[data.category_id],
+                end_data: data.end_data,
+                description_group: data.description_group
 
             })
 
             route_to_home_page()
             stop_load()
-            // $("#loader").css('display', 'none')
             show_alert("success", "You have created a new purchasing group!")
-            console.log("post", data)
-
-            // show the data you got from B in result div
-            //$("#result").html(data);
         },
         error: function (data) {
             stop_load()
             show_alert("error", "there was a problem with adding a new group, please try again")
         }
     });
-
-    //   });
 }
 
 async function route_to_group_details(group_id) {
-    //get group details from server , includes imgs
+    // $('.slider-nav').html("")
+    // $(".slider-for").html("")
+    if(user_groups_id.indexOf(parseInt(group_id)) >= 0){
+        $("#is_already_subscrine_details").show()
+        $("#subscribe_in_details").hide()
+        $("#forum_of_group").show()
+    } else {
+        $("#is_already_subscrine_details").hide()
+        $("#subscribe_in_details").show()
+        $("#forum_of_group").hide()
+    }
+    // indetails = true
+    // // $("#sliders").empty()
+    // imgs_collection1 = $(".slider-for")
+    // // (`<div class="slider-for border group_details_imgs_of_product"
+    // //                     id="group_details_imgs_of_product_1">
+    // //                     </div>`) //
+    // imgs_collection2 = $(".slider-nav")
+    // // (`<div class="slider-nav pl-4 pr-4 bg-secondary shadow group_details_imgs_of_product"
+    // //                     id="group_details_imgs_of_product_2">
+    // //                     </div>`) //("#group_details_imgs_of_product_1")
+    // run_slick()
+    
+    slideIndex = 0
+    // while(slideIndex > 0){
+    //         $('.slider-nav').slick('slickRemove',slideIndex - 1);
+    //         $('.slider-for').slick('slickRemove',slideIndex - 1);
+    //         if (slideIndex !== 0){
+    //             slideIndex--;
+    //         }
+        
+    // }
+    // // $("#sliders").append(imgs_collection1)
+    // // $("#sliders").append(imgs_collection2)
+
     group = list_all_groups.find(G => G.group_id == group_id)
     urls = cat_ob[group.category + "_urls"]
-    imgs_collection1 = $("#group_details_imgs_of_product_1")
-    imgs_collection2 = $("#group_details_imgs_of_product_1")
-    for (let i = 1; i < 7; i++) {
+
+    
+
+    for (let i = 1; i < 6; i++) {
         url = urls[Math.floor(Math.random() * urls.length)]
-        // $("img[src='assets\\img\\slick" + i + ".jpg']").attr("src", url)
         $("#img1_" + i).attr("src", url)
         $("#img2_" + i).attr("src", url)
     }
-
+    // run_slick()
     //render
     $("#router-outlet").addClass("hidden")
     //add value for subscirbe btn - to get in subscribe time
@@ -331,6 +349,7 @@ async function route_to_group_details(group_id) {
     $("#group_duedate").html(group.end_date)
     $("#group_manager").html(group.manager)
     $("#group_details").removeClass("hidden")
+    // run_slick()
 
 
 
@@ -351,7 +370,8 @@ async function route_to_group_details(group_id) {
                 msg = M['message_']
                 likes = M['count_like']
                 time = M['end_time'] + ", " + M['end_time']
-                let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+                console.log(uname, uname.charAt(0))
+                let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time, group_id, uname.charAt(0)))
                 forum.append(msg_ele)
             });
         }
@@ -372,14 +392,16 @@ function createMsg(e) {
             msg: $("#msg").attr("value")
         },
         function (returnedMsgs) {
-            returnedMsgs = JSON.parse(returnedMsgs)
+            returnedMsg = JSON.parse(returnedMsgs)
+            console.log(returnedMsg)
             forum = $("#forum_of_group")
-            gid = returnedMsgs.group_id
-            uname = returnedMsgs.user_name
-            msg = returnedMsgs['message_']
-            likes = returnedMsgs['count_like']
-            time = returnedMsgs['end_date'] + ", " + returnedMsgs['end_time']
-            let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time))
+            gid = returnedMsg.group_id
+            uname = returnedMsg.user_name
+            msg = returnedMsg['message_']
+            likes = returnedMsg['count_like']
+            time = returnedMsg['end_date'] + ", " + returnedMsg['end_time']
+            console.log(msg)
+            let msg_ele = $.parseHTML(forum_msg.format(uname, msg, user_img_path, likes, time, gid, uname.charAt(0)))
             forum.append(msg_ele)
             msg: $("#msg").attr("value", "")
 
@@ -388,8 +410,6 @@ function createMsg(e) {
 }
 
 const render_img = _.template(`<img src="<%=img_path%>" alt="">`);
-
-
 
 
 //UTILS
@@ -449,6 +469,138 @@ format_date = (date) => {
 
 filter_and_add_list_elements_to_father_element = (father_ele_name, child_list_ele, filter_func) => {
     filterd_list = child_list_ele.filter(filter_func)
-    console.log(child_list_ele, filterd_list)
     $(father_ele_name).append(filterd_list)
+}
+
+destroy_slick = () => {
+
+    
+  
+}
+
+run_slick = () => {
+
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        focusOnSelect: true,
+        autoplay: true,
+        autoplaySpeed: 100,
+        dots: false,
+    });
+}
+
+// add_like_for_group = (group_id, username, date, time) => {
+//     $.post
+// }
+
+/*============Dynamic modal content ============*/
+$('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+    modal.find('.modal-body input').val(recipient)
+});
+/*============Dynamic modal content ============*/
+
+//Tooltips
+$('[data-toggle="tooltip"]').tooltip();
+
+//Popovers
+$('[data-toggle="popover"]').popover();
+
+//Dismissed popover
+$('.popover-dismiss').popover({
+    trigger: 'focus'
+})
+
+//Colored
+if ($('.js-secondary').length) {
+    var switchery = new Switchery(document.querySelector('.js-secondary'), {
+        color: '#DDDDDD'
+    });
+    var switchery = new Switchery(document.querySelector('.js-primary'), {
+        color: '#0073AA'
+    });
+    var switchery = new Switchery(document.querySelector('.js-success'), {
+        color: '#29A744'
+    });
+    var switchery = new Switchery(document.querySelector('.js-info'), {
+        color: '#169DB2'
+    });
+    var switchery = new Switchery(document.querySelector('.js-warning'), {
+        color: '#F1C40F'
+    });
+    var switchery = new Switchery(document.querySelector('.js-danger'), {
+        color: '#ED6A5A'
+    });
+    var switchery = new Switchery(document.querySelector('.js-dark'), {
+        color: '#333'
+    });
+
+
+    /*===========Bootstrap 4 validation==================*/
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+    /*===========Bootstrap 4 validation==================*/
+}
+
+/*========== Toggle Sidebar width ============ */
+function toggle_sidebar() {
+    $('#sidebar-toggle-btn').toggleClass('slide-in');
+    $('.sidebar').toggleClass('shrink-sidebar');
+    $('.content').toggleClass('expand-content');
+
+    //Resize inline dashboard charts
+    $('#incomeBar canvas').css("width", "100%");
+    $('#expensesBar canvas').css("width", "100%");
+    $('#profitBar canvas').css("width", "100%");
+}
+
+
+/*==== Header menu toggle navigation show and hide =====*/
+
+function toggle_dropdown(elem) {
+    $(elem).parent().children('.dropdown').slideToggle("fast");
+    $(elem).parent().children('.dropdown').toggleClass("animated flipInY");
+}
+
+$("body").not(document.getElementsByClassName('dropdown-toggle')).click(function () {
+    if ($('.dropdown').hasClass('animated')) {
+        //$('.dropdown').removeClass("animated flipInY");
+    }
+});
+/*==== Header menu toggle navigation show and hide =====*/
+
+
+/*==== Sidebar toggle navigation show and hide =====*/
+
+function toggle_menu(ele) {
+    //close all ul with children class that are open except the one with the selected id
+    $('.children').not(document.getElementById(ele)).slideUp("Normal");
+    $("#" + ele).slideToggle("Normal");
+    localStorage.setItem('lastTab', ele);
 }

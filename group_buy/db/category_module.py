@@ -3,7 +3,7 @@ import connection as connection
 
 class Category:
 
-    def __init__(self, category_name, category_id = -1):
+    def __init__(self, category_name, category_id=-1):
         self.name = category_name
         if category_id != -1:
             self.id = category_id

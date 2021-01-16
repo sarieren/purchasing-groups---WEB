@@ -4,19 +4,50 @@
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="keywords" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!--Meta Responsive tag-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Script -->
+    <script src="assets\js\jquery.min.js"></script>
+    <script src="assets\js\jquery-1.12.4.min.js"></script>
+    <!--Popper JS-->
+    <script src="assets\js\popper.min.js"></script>
+    <!--Bootstrap-->
+    <script src="assets\js\bootstrap.min.js"></script>
+    <!--Paper bootstrap wizard-->
+    <!-- <script src="assets\js\jquery.bootstrap.wizard.js"></script> -->
+    <!-- <script src="assets\js\paper-bootstrap-wizard.js"></script> -->
+    <script src="assets\js\jquery.validate.min.js"></script>
+    <!--Sweet alert JS-->
+    <script src="assets\js\sweetalert.js"></script>
+    <!--Progressbar JS-->
+    <!-- <script src="assets\js\progressbar.min.js"></script> -->
+
+    <!--Bootstrap Calendar JS-->
+    <!-- <script src="assets\js\calendar/bootstrap_calendar.js"></script>
+<script src="assets\js\calendar/demo.js"></script> -->
+    <!--Bar rating-->
+    <!-- <script src="assets\js\jquery.barrating.min.js"></script> -->
+    <!-- <script src="assets\js\custom.js"></script> -->
+
+    <!--Nice select-->
+    <!-- <script src="assets\js\jquery.nice-select.min.js"></script> -->
+    <!--Slick Courasel-->
+    <script src="assets\js\jquery-migrate-1.2.1.min.js"></script>
+    <script src="assets\css\slick/slick.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+
+    <script src="index.js"></script>
+
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="assets\css\bootstrap.min.css">
     <!--paper bootstrap wizard-->
     <link rel="stylesheet" href="assets\css\themify-icons.css">
-    <link rel="stylesheet" href="assets\css\paper-bootstrap-wizard.css">
+    <!-- <link rel="stylesheet" href="assets\css\paper-bootstrap-wizard.css"> -->
     <!--Custom style.css-->
     <link rel="stylesheet" href="assets\css\quicksand.css">
     <link rel="stylesheet" href="assets\css\style.css">
@@ -28,7 +59,7 @@
     <link rel="stylesheet" href="assets\css\slick/slick.css">
     <link rel="stylesheet" href="assets\css\slick/slick-theme.css">
     <!--Animate CSS-->
-    <link rel="stylesheet" href="assets\css\chartist.min.css">
+    <!-- <link rel="stylesheet" href="assets\css\chartist.min.css"> -->
     <!--Map-->
     <!-- <link rel="stylesheet" href="assets\css\jquery-jvectormap-2.0.2.css"> -->
     <!--Bootstrap Calendar-->
@@ -38,15 +69,15 @@
     <link rel="stylesheet" href="assets\css\quicksand.css">
     <link rel="stylesheet" href="index.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
 
 
     <title>Group Buy</title>
 </head>
 
 <body>
+
     <!--Page loader-->
-    <div class="loader-wrapper" id="loaedr" style="opacity: 0.95;background-color: gray">
+    <div class="loader-wrapper" id="loaedr" style="opacity: 0.95;background-color: gray;">
          <div class="loader-circle">
             <div class="loader-wave"></div>
         </div>
@@ -54,7 +85,7 @@
     </div>
     <!--Page loader-->
 
-    <button type="button" id="show_alert_success" class="btn btn-success hidden" >
+    <button type="button" id="show_alert_success" class="btn btn-success hidden">
         <i class="fa fa-check"></i> alert-success
     </button>
     <!--Page Wrapper-->
@@ -63,11 +94,11 @@
     <div class="container-fluid">
 
         <!--Header-->
-        <div class="row header shadow-sm" >
+        <div class="row header shadow-sm">
 
             <!--Logo-->
             <div class="col-sm-3 pl-0 text-center header-logo">
-                <div class="bg-theme mr-3 pt-3 pb-2 mb-0" id ="logo" style="height: 100%;">
+                <div class="bg-theme mr-3 pt-3 pb-2 mb-0" id="logo" style="height: 100%;">
                     <h3 class="logo"><a href="#" class="text-secondary logo"><i class="fa fa-users"></i> Group Buy</a>
                     </h3>
                 </div>
@@ -113,8 +144,8 @@
                         </div>
                         <!--Notication icon-->
 
-                        
-                        
+
+
                     </div>
                     <!--Menu Icons -->
 
@@ -126,7 +157,8 @@
                         <div class="mr-4">
                             <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <span id="user_img_letter" class="customer-circle end text-light text-center pt-2 mt-4 user_img_letter ml-3"></span>
+                                <span id="user_img_letter"
+                                    class="customer-circle end text-light text-center pt-2 mt-4 user_img_letter ml-3"></span>
                                 <!-- <img alt="{user_img_path}" class="rounded-circle user_img_path" width="40px" height="40px"> -->
                             </a>
                             <div class="dropdown-menu dropdown-menu-right mt-13" aria-labelledby="dropdownMenuLink">
@@ -152,7 +184,8 @@
                 <div class="inner-sidebar mr-3">
                     <!--Image Avatar-->
                     <div class="avatar text-center" style="padding: 2em">
-                        <span id="user_img_letter" class="customer-circle end text-light text-center pt-2 mt-4 user_img_letter ml-2"></span>
+                        <span id="user_img_letter"
+                            class="customer-circle end text-light text-center pt-2 mt-4 user_img_letter ml-2"></span>
                         <!-- <img alt="{user_img_path}" class="rounded-circle user_img_path" /> -->
                         <p><strong id="user_name">{name}</strong></p>
                         <span class="text-primary small"><strong id="user_mail">{mail}</strong></span>
@@ -206,24 +239,24 @@
                         <!--Product detail-->
                         <div class="product-list">
                             <div class="row">
-                                <div class="col-sm-5 col-12">
+                                <div class="col-sm-5 col-12" id="sliders">
                                     <div class="slider-for border group_details_imgs_of_product"
                                         id="group_details_imgs_of_product_1">
-                                        <img id="img1_1" src="assets\img\slick1.jpg" alt="">
-                                        <img id="img1_2" src="assets\img\slick2.jpg" alt="">
-                                        <img id="img1_3" src="assets\img\slick3.jpg" alt="">
-                                        <img id="img1_4" src="assets\img\slick4.jpg" alt="">
-                                        <img id="img1_5" src="assets\img\slick5.jpg" alt="">
-                                        <img id="img1_6" src="assets\img\slick6.jpg" alt="">
+                                        <img class="slick_img" id="img1_1" src="assets\img\slick1.jpg" alt="">
+                                        <img class="slick_img" id="img1_2" src="assets\img\slick2.jpg" alt="">
+                                        <img class="slick_img" id="img1_3" src="assets\img\slick3.jpg" alt="">
+                                        <img class="slick_img" id="img1_4" src="assets\img\slick4.jpg" alt="">
+                                        <img class="slick_img" id="img1_5" src="assets\img\slick5.jpg" alt="">
+                                        <img class="slick_img" id="img1_6" src="assets\img\slick6.jpg" alt="">
                                     </div>
                                     <div class="slider-nav pl-4 pr-4 bg-secondary shadow group_details_imgs_of_product"
                                         id="group_details_imgs_of_product_2">
-                                        <img id="img2_1" src="assets\img\slick1.jpg" alt="">
-                                        <img id="img2_2" src="assets\img\slick2.jpg" alt="">
-                                        <img id="img2_3" src="assets\img\slick3.jpg" alt="">
-                                        <img id="img2_4" src="assets\img\slick4.jpg" alt="">
-                                        <img id="img2_5" src="assets\img\slick5.jpg" alt="">
-                                        <img id="img2_6" src="assets\img\slick6.jpg" alt="">
+                                        <img class="slick_img" id="img2_1" src="assets\img\slick1.jpg" alt="">
+                                        <img class="slick_img" id="img2_2" src="assets\img\slick2.jpg" alt="">
+                                        <img class="slick_img" id="img2_3" src="assets\img\slick3.jpg" alt="">
+                                        <img class="slick_img" id="img2_4" src="assets\img\slick4.jpg" alt="">
+                                        <img class="slick_img" id="img2_5" src="assets\img\slick5.jpg" alt="">
+                                        <img class="slick_img" id="img2_6" src="assets\img\slick6.jpg" alt="">
                                     </div>
                                 </div>
 
@@ -236,7 +269,8 @@
                                         </div>
                                         <h2 id="short_description_of_group" class="mb-3">{short description of product}
                                         </h2>
-                                        <p class="small mb-3"><strong>Category:</strong> <span id="brand_of_group_in_details"> {brandof product}</span></p>
+                                        <p class="small mb-3"><strong>Category:</strong> <span
+                                                id="brand_of_group_in_details"> {brandof product}</span></p>
 
 
 
@@ -246,9 +280,14 @@
                                         <p class="product-slug mb-5" id="long_decription_of_group">{long description}
                                         </p>
                                         <hr>
-                                        <h4 class="mt-5 mb-5">Manager is: <span id="group_manager"> </span>,  Due Date is: <span id="group_duedate"></span></h4>
+                                        <h4 class="mt-5 mb-5">Manager is: <span id="group_manager"> </span>, Due Date
+                                            is: <span id="group_duedate"></span></h4>
 
-                                        <div class=" mt-5">
+                                        <div class=" mt-5" id="is_already_subscrine_details">
+                                            <h3 class="blue-text"> You Are Already Subscribed</h3>
+
+                                        </div>
+                                        <div class=" mt-5" id="subscribe_in_details">
                                             <button type="button" id="btn_subscribe"
                                                 class="btn btn-theme rounded-0 mr-3 px-3">
                                                 <i class="fa fa-shopping-cart mr-3"></i> SUBSCRIBE
@@ -283,27 +322,29 @@
                             </nav>
 
                             <div class="tab-content py-3 px-3 px-sm-0" id="forum_of_group">
-                                
-                            <!-- here will be all msgs -->
-                        
+
+                                <!-- here will be all msgs -->
+
                             </div>
                             <input id="group_id_for_forum" type="text" style="display:none">
                             <!-- add msg form -->
                             <!-- action="/save_msg" method="POST" -->
-                            <form  class="mt-2" id="new_msg">
+                            <form class="mt-2" id="new_msg">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-send"></i></span>
+                                        <span class="input-group-text" id="basic-addon1"><i
+                                                class="fa fa-send"></i></span>
                                     </div>
                                     <!-- <textarea name="msg" class="form-control mt-0" placeholder="Your message" aria-label="message" aria-describedby="basic-addon1">
 
                                     </textarea> -->
-                                    <input type="text" id="msg" name="msg" size="50" class="form-control mt-0" placeholder="Your message" aria-label="message" aria-describedby="basic-addon1" >
+                                    <input type="text" id="msg" name="msg" size="50" class="form-control mt-0"
+                                        placeholder="Your message" aria-label="message" aria-describedby="basic-addon1">
                                 </div>
-        
+
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-theme btn-block p-2 mb-1" value="send message">
-        
+
                                 </div>
                             </form>
                         </div>
@@ -324,42 +365,15 @@
 
         </div>
 
-        <script src="assets\js\jquery.min.js"></script>
-        <script src="assets\js\jquery-1.12.4.min.js"></script>
-        <!--Popper JS-->
-        <script src="assets\js\popper.min.js"></script>
-        <!--Bootstrap-->
-        <script src="assets\js\bootstrap.min.js"></script>
-        <!--Paper bootstrap wizard-->
-        <script src="assets\js\jquery.bootstrap.wizard.js"></script>
-        <script src="assets\js\paper-bootstrap-wizard.js"></script>
-        <script src="assets\js\jquery.validate.min.js"></script>
-        <!--Sweet alert JS-->
-        <script src="assets\js\sweetalert.js"></script>
-        <!--Progressbar JS-->
-        <script src="assets\js\progressbar.min.js"></script>
 
-        <!--Bootstrap Calendar JS-->
-        <!-- <script src="assets\js\calendar/bootstrap_calendar.js"></script>
-    <script src="assets\js\calendar/demo.js"></script> -->
-        <!--Bar rating-->
-        <script src="assets\js\jquery.barrating.min.js"></script>
-
-        <!--Nice select-->
-        <script src="assets\js\jquery.nice-select.min.js"></script>
 
         <!--Custom Js Script-->
-        <script src="assets\js\custom.js"></script>
         <!--Custom Js Script-->
         <!-- <script>
             //Nice select
             $('.bulk-actions').niceSelect();
         </script> -->
-        <script src="index.js"></script>
-        <!--Slick Courasel-->
-        <script src="assets\js\jquery-migrate-1.2.1.min.js"></script>
-        <script src="assets\css\slick/slick.min.js"></script>
-        <script src="assets\js\product-carousel.js"></script>
+
 </body>
 
 </html>
