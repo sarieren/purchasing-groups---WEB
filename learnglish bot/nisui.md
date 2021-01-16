@@ -1,0 +1,8 @@
+# bbbb
+```plantuml
+
+class Point{
+
+}
+
+```
